@@ -154,32 +154,51 @@
                             </a>
 
                             <!-- Social Sharing links -->
-                            <div class="mt-8 pt-5 border-t border-gray-100 flex items-center gap-3.5 flex-wrap">
+                            <div class="mt-8 pt-5 border-t border-gray-100 flex items-center gap-3.5 flex-wrap" x-data="{
+                                shareUrl: window.location.href,
+                                shareTitle: '{{ addslashes($shop['name']) }}',
+                                copied: false,
+                                copyLink() {
+                                    navigator.clipboard.writeText(this.shareUrl);
+                                    this.copied = true;
+                                    setTimeout(() => this.copied = false, 2500);
+                                }
+                            }">
                                 <span class="text-xs font-bold text-gray-500">Bagikan:</span>
                                 <!-- Facebook -->
-                                <a href="#" class="h-8.5 w-8.5 rounded-full bg-[#1877f2] hover:bg-opacity-90 text-white flex items-center justify-center transition shadow-sm">
+                                <a :href="'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(shareUrl)" target="_blank" rel="noopener noreferrer" class="h-8.5 w-8.5 rounded-full border border-blue-200 bg-white hover:bg-blue-50 text-[#1877f2] flex items-center justify-center transition shadow-sm" title="Bagikan ke Facebook">
                                     <svg class="h-4 w-4 fill-current" viewBox="0 0 24 24">
                                         <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
                                     </svg>
                                 </a>
                                 <!-- Whatsapp -->
-                                <a href="#" class="h-8.5 w-8.5 rounded-full bg-[#25d366] hover:bg-opacity-90 text-white flex items-center justify-center transition shadow-sm">
+                                <a :href="'https://api.whatsapp.com/send?text=' + encodeURIComponent(shareTitle + ' ' + shareUrl)" target="_blank" rel="noopener noreferrer" class="h-8.5 w-8.5 rounded-full bg-[#25d366] hover:bg-opacity-90 text-white flex items-center justify-center transition shadow-sm" title="Bagikan ke WhatsApp">
                                     <svg class="h-4 w-4 fill-current" viewBox="0 0 24 24">
                                         <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.513 2.262 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.454L0 24zm6.59-4.846c1.6.95 3.398 1.452 5.34 1.453 5.4 0 9.792-4.393 9.795-9.798.002-2.618-1.017-5.079-2.872-6.936-1.854-1.854-4.312-2.873-6.932-2.875-5.4 0-9.792 4.393-9.797 9.799-.001 2.029.531 4.019 1.54 5.79l-1.011 3.693 3.785-.992z"/>
                                     </svg>
                                 </a>
                                 <!-- Twitter/X -->
-                                <a href="#" class="h-8.5 w-8.5 rounded-full bg-black hover:bg-opacity-90 text-white flex items-center justify-center transition shadow-sm">
+                                <a :href="'https://twitter.com/intent/tweet?url=' + encodeURIComponent(shareUrl) + '&text=' + encodeURIComponent(shareTitle)" target="_blank" rel="noopener noreferrer" class="h-8.5 w-8.5 rounded-full bg-black hover:bg-opacity-90 text-white flex items-center justify-center transition shadow-sm" title="Bagikan ke X">
                                     <svg class="h-3.5 w-3.5 fill-current" viewBox="0 0 24 24">
                                         <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
                                     </svg>
                                 </a>
                                 <!-- Copy Link -->
-                                <button onclick="navigator.clipboard.writeText(window.location.href); alert('Tautan produk disalin!');" class="h-8.5 w-8.5 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-600 flex items-center justify-center transition shadow-sm" aria-label="Salin tautan produk">
-                                    <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
-                                    </svg>
-                                </button>
+                                <div class="relative flex items-center">
+                                    <button @click="copyLink()" class="h-8.5 w-8.5 rounded-full bg-gray-900 hover:bg-gray-800 text-white flex items-center justify-center transition shadow-sm" title="Salin Tautan">
+                                        <template x-if="!copied">
+                                            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+                                            </svg>
+                                        </template>
+                                        <template x-if="copied">
+                                            <svg class="h-4 w-4 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                                            </svg>
+                                        </template>
+                                    </button>
+                                    <span x-show="copied" x-transition.opacity style="position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); margin-bottom: 6px; z-index: 50;" class="bg-gray-900 text-white text-[11px] font-bold px-2.5 py-1 rounded-lg shadow-lg whitespace-nowrap">Tautan Disalin!</span>
+                                </div>
                             </div>
                         </div>
                     </div>
