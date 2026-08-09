@@ -265,6 +265,100 @@
                     </div>
                 </div>
 
+                {{-- Title Jumlah Penduduk Per Tahun --}}
+                <div class="infotab-stats-title mt-10">Jumlah Penduduk Per Tahun</div>
+
+                @php
+                    $yearlyPopulationData = $yearlyPopulationData ?? [
+                        ['label' => '2020', 'value' => 4520],
+                        ['label' => '2021', 'value' => 4585],
+                        ['label' => '2022', 'value' => 4640],
+                        ['label' => '2023', 'value' => 4695],
+                        ['label' => '2024', 'value' => 4738],
+                        ['label' => '2025', 'value' => 4782],
+                    ];
+
+                    $maxYearlyValue = count($yearlyPopulationData) > 0 ? max(array_column($yearlyPopulationData, 'value')) : 0;
+
+                    if ($maxYearlyValue <= 0) {
+                        $yearlyInterval = 1000;
+                    } elseif ($maxYearlyValue <= 500) {
+                        $yearlyInterval = 100;
+                    } elseif ($maxYearlyValue <= 1000) {
+                        $yearlyInterval = 200;
+                    } elseif ($maxYearlyValue <= 3000) {
+                        $yearlyInterval = 500;
+                    } else {
+                        $yearlyInterval = (int) ceil(($maxYearlyValue / 6) / 500) * 500;
+                    }
+                    $yearlyMaxY = $yearlyInterval * 6;
+                    if ($yearlyMaxY < $maxYearlyValue) $yearlyMaxY += $yearlyInterval;
+
+                    $yearlyYLabels = [];
+                    for ($v = $yearlyMaxY; $v >= 0; $v -= $yearlyInterval) {
+                        $yearlyYLabels[] = $v;
+                    }
+                @endphp
+
+                {{-- Yearly Population Chart Card --}}
+                <div class="bg-[color:var(--surface-strong)] border border-[color:var(--line)] rounded-[1.75rem] p-6 sm:p-8 shadow-[0_18px_40px_rgba(46,125,50,0.04)] mb-8">
+                    <div class="overflow-x-auto pb-4">
+                        <div class="min-w-[500px] lg:min-w-0 pr-4">
+                            {{-- Chart Grid (Y-Axis + Bars) --}}
+                            <div class="flex items-start">
+                                {{-- Y-axis numbers --}}
+                                <div class="flex flex-col justify-between text-right pr-2 text-[10px] text-gray-400 font-bold h-[240px] pt-6 select-none shrink-0 w-14">
+                                    @foreach ($yearlyYLabels as $labelVal)
+                                        <span>{{ number_format($labelVal, 0, ',', '.') }}</span>
+                                    @endforeach
+                                </div>
+
+                                {{-- Bars + Gridlines Area --}}
+                                <div class="relative flex-grow h-[240px] pt-6">
+                                    {{-- Background Horizontal Gridlines --}}
+                                    <div class="absolute bottom-0 left-0 right-0 h-[216px] flex flex-col justify-between pointer-events-none">
+                                        @for ($i = 0; $i < 7; $i++)
+                                            <div class="border-b border-gray-100/80 w-full h-0"></div>
+                                        @endfor
+                                    </div>
+
+                                    {{-- Bars Container --}}
+                                    <div class="absolute bottom-0 left-0 right-0 h-[216px] flex justify-around items-end z-10 px-4">
+                                        @foreach ($yearlyPopulationData as $item)
+                                            @php
+                                                $yVal = is_array($item) ? ($item['value'] ?? 0) : ($item->value ?? 0);
+                                                $yBarH = $yearlyMaxY > 0 ? ($yVal / $yearlyMaxY) * 216 : 0;
+                                            @endphp
+                                            <div class="flex flex-col items-center group w-full">
+                                                <span class="text-[10px] sm:text-xs text-gray-500 font-bold mb-1.5 group-hover:scale-105 transition duration-200">
+                                                    {{ number_format($yVal, 0, ',', '.') }}
+                                                </span>
+                                                <div
+                                                    class="rounded-t-md w-10 sm:w-12 transition-all duration-300 shadow-[0_-2px_8px_rgba(46,125,50,0.1)] hover:shadow-[0_-4px_12px_rgba(46,125,50,0.2)]"
+                                                    style="background: linear-gradient(to top, #1b5e20, #4caf50); height: {{ $yBarH }}px;"
+                                                ></div>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            </div>
+
+                            {{-- X-axis labels --}}
+                            <div class="flex items-start mt-3 pt-3 border-t border-gray-100">
+                                <div class="w-14 shrink-0"></div>
+                                <div class="flex justify-around flex-grow px-4">
+                                    @foreach ($yearlyPopulationData as $item)
+                                        <div class="w-12 text-center text-[10px] sm:text-xs text-[color:var(--text-soft)] font-bold select-none">
+                                            {{ is_array($item) ? $item['label'] : $item->label }}
+                                        </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
                 {{-- Title Kelompok Umur --}}
                 <div class="infotab-stats-title mt-10">Berdasarkan Kelompok Umur</div>
 

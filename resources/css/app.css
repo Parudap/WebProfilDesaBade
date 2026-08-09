@@ -59,7 +59,13 @@ h1, h2, h3, h4, h5, h6 {
 .hero-section h3,
 .hero-section h4,
 .hero-section h5,
-.hero-section h6 {
+.hero-section h6,
+#sambutan-kades h1,
+#sambutan-kades h2,
+#sambutan-kades h3,
+#sambutan-kades h4,
+#sambutan-kades h5,
+#sambutan-kades h6 {
     color: #ffffff;
 }
 
@@ -75,6 +81,10 @@ html, body {
 
 [x-cloak] {
     display: none !important;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
 }
 
 ::selection {
@@ -1406,8 +1416,8 @@ select {
 
 @media (min-width: 1024px) {
     .footer-inner {
-        grid-template-columns: 1.4fr 1fr 1fr 1fr;
-        gap: 3rem;
+        grid-template-columns: 1.3fr 1fr 1fr 0.9fr 1.1fr;
+        gap: 2.5rem;
     }
 }
 
@@ -1721,9 +1731,9 @@ select {
 .infotab-panel {
     display: grid;
     gap: 2rem;
-    padding-top: 2rem;
+    padding-top: 1.5rem;
     margin-bottom: 2.5rem;
-    align-items: center;
+    align-items: start;
 }
 
 @media (min-width: 768px) {
@@ -1753,9 +1763,10 @@ select {
 .infotab-panel-art {
     position: relative;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
-    height: 220px;
+    min-height: 320px;
+    height: auto;
 }
 
 .infotab-art-blob {
@@ -1911,3 +1922,83 @@ blockquote, td, th, label, div {
     word-break: normal;
     overflow-wrap: break-word;
 }
+
+/* =============================================
+   PROFIL DESA — FOTO KOMPONEN
+   ============================================= */
+
+/* Foto di kolom kiri header */
+.profil-header-foto {
+    position: relative;
+    margin-top: 1.25rem;
+    border-radius: 1.5rem;
+    overflow: hidden;
+    max-width: 340px;
+    box-shadow: 0 20px 50px rgba(46,125,50,0.18);
+    border: 3px solid rgba(255,255,255,0.8);
+}
+
+.profil-header-foto-img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.4s ease;
+}
+
+.profil-header-foto:hover .profil-header-foto-img {
+    transform: scale(1.04);
+}
+
+.profil-header-foto-badge {
+    position: absolute;
+    bottom: 12px;
+    left: 12px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255,255,255,0.92);
+    backdrop-filter: blur(8px);
+    color: var(--primary-deep);
+    font-size: 11.5px;
+    font-weight: 700;
+    padding: 5px 12px;
+    border-radius: 20px;
+    border: 1px solid rgba(46,125,50,0.15);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+/* Foto di tiap tab panel (bersih tanpa overlay/tambahan warna) */
+.profil-tab-foto-wrap {
+    position: relative;
+    width: 100%;
+    max-width: 580px;
+    border-radius: 1.5rem;
+    overflow: hidden;
+    box-shadow: 0 16px 40px rgba(0,0,0,0.1);
+    border: 1px solid var(--line);
+    margin: 0 auto;
+}
+
+.profil-tab-foto-img {
+    width: 100%;
+    height: 350px;
+    object-fit: cover;
+    display: block;
+}
+
+.profil-tab-foto-tag {
+    position: absolute;
+    bottom: 12px;
+    right: 12px;
+    background: rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(6px);
+    color: #ffffff;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 8px;
+    letter-spacing: 0.02em;
+    pointer-events: none;
+}
+

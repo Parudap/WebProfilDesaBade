@@ -54,11 +54,18 @@ class BeritaController extends Controller
             'summary'      => ['nullable', 'string', 'max:500'],
             'content'      => ['required', 'string'],
             'image'        => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:10240'],
+            'images'       => ['nullable', 'array', 'max:5'],
             'images.*'     => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:10240'],
             'author'       => ['nullable', 'string', 'max:100'],
             'published_at' => ['nullable', 'date'],
             'is_published' => ['nullable', 'boolean'],
         ]);
+
+        $uploadedCount = $request->hasFile('images') ? count($request->file('images')) : 0;
+        if ($request->hasFile('image')) $uploadedCount++;
+        if ($uploadedCount > 5) {
+            return back()->withErrors(['images' => 'Maksimal 5 foto yang dapat diunggah.'])->withInput();
+        }
 
         $imagesList = [];
         if ($request->hasFile('images')) {
@@ -103,11 +110,21 @@ class BeritaController extends Controller
             'summary'      => ['nullable', 'string', 'max:500'],
             'content'      => ['required', 'string'],
             'image'        => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:10240'],
+            'images'       => ['nullable', 'array', 'max:5'],
             'images.*'     => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:10240'],
             'author'       => ['nullable', 'string', 'max:100'],
             'published_at' => ['nullable', 'date'],
             'is_published' => ['nullable', 'boolean'],
         ]);
+
+        // Hitung total foto setelah proses
+        $existingCount = count($berita->images ?: ($berita->image ? [$berita->image] : []));
+        $deletedCount  = $request->has('delete_images') ? count((array) $request->input('delete_images', [])) : 0;
+        $newCount      = ($request->hasFile('images') ? count($request->file('images')) : 0) + ($request->hasFile('image') ? 1 : 0);
+        $totalAfter    = $existingCount - $deletedCount + $newCount;
+        if ($totalAfter > 5) {
+            return back()->withErrors(['images' => 'Total foto tidak boleh lebih dari 5. Hapus beberapa foto lama terlebih dahulu.'])->withInput();
+        }
 
         $data = [
             'title'        => $request->title,

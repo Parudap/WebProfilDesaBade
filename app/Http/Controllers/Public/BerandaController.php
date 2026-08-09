@@ -278,54 +278,53 @@ class BerandaController extends Controller
             ];
         }
 
+        // Yearly Population (Penduduk Per Tahun)
+        $yearlyPopDb = StatistikPenduduk::getByKategori('tahun_penduduk');
+        $yearlyPopulationData = [];
+        if ($yearlyPopDb->isNotEmpty()) {
+            foreach ($yearlyPopDb as $item) {
+                $yearlyPopulationData[] = [
+                    'label' => $item->label,
+                    'value' => $item->value_laki + $item->value_perempuan,
+                ];
+            }
+        } else {
+            $yearlyPopulationData = [
+                ['label' => '2020', 'value' => 4520],
+                ['label' => '2021', 'value' => 4585],
+                ['label' => '2022', 'value' => 4640],
+                ['label' => '2023', 'value' => 4695],
+                ['label' => '2024', 'value' => 4738],
+                ['label' => '2025', 'value' => 4782],
+            ];
+        }
+
         // Perangkat Desa
         $perangkatDb = PerangkatDesa::where('tipe', 'perangkat')->orderBy('urutan')->get();
         if ($perangkatDb->isNotEmpty()) {
             $perangkatDesa = $perangkatDb->map(function ($item) {
+                $fotoUrl = $item->foto;
+                if (empty($fotoUrl) && str_contains(strtolower($item->jabatan), 'kepala desa')) {
+                    $fotoUrl = PengaturanWebsite::get('foto_kades', 'images/kepala-desa.jpg');
+                }
                 return [
                     'jabatan'    => $item->jabatan,
                     'nama'       => $item->nama,
-                    'pendidikan' => $item->pendidikan ?: '-',
-                    'foto'       => $this->getImageUrl($item->foto, null),
+                    'foto'       => !empty($fotoUrl) ? $this->getImageUrl($fotoUrl, null) : null,
                 ];
             })->toArray();
         } else {
             $perangkatDesa = [
-                ['jabatan' => 'Kepala Desa',              'nama' => 'Haryono',             'pendidikan' => 'SMA'],
-                ['jabatan' => 'Sekretaris Desa',          'nama' => 'Rifandaru Cahya Widhana', 'pendidikan' => 'S1'],
-                ['jabatan' => 'Kaur Keuangan',            'nama' => 'Prita Rahayu',        'pendidikan' => 'D3'],
-                ['jabatan' => 'Kaur Umum dan Perencanaan','nama' => 'Lilis Maesaroh',      'pendidikan' => 'SMK'],
-                ['jabatan' => 'Kasi Pemerintahan',        'nama' => 'Noviyana',            'pendidikan' => 'S1'],
-                ['jabatan' => 'Kasi Kesra dan Pelayanan', 'nama' => 'Maryono',             'pendidikan' => 'SLTA'],
-                ['jabatan' => 'Kadus I',                  'nama' => 'Subadi',              'pendidikan' => 'SLTA'],
-                ['jabatan' => 'Kadus II',                 'nama' => 'Haryanto',            'pendidikan' => 'SLTA'],
-                ['jabatan' => 'Kadus III',                'nama' => 'Bejo',                'pendidikan' => 'SLTA'],
-                ['jabatan' => 'Kadus IV',                 'nama' => 'Slamet Riyadi',       'pendidikan' => 'SLTA'],
-            ];
-        }
-
-        // BPD
-        $bpdDb = PerangkatDesa::where('tipe', 'bpd')->orderBy('urutan')->get();
-        if ($bpdDb->isNotEmpty()) {
-            $bpdData = $bpdDb->map(function ($item) {
-                return [
-                    'jabatan'    => $item->jabatan,
-                    'nama'       => $item->nama,
-                    'pendidikan' => $item->pendidikan ?: '-',
-                    'foto'       => $this->getImageUrl($item->foto, null),
-                ];
-            })->toArray();
-        } else {
-            $bpdData = [
-                ['jabatan' => 'Ketua',       'nama' => 'Sutardi',          'pendidikan' => 'SLTA'],
-                ['jabatan' => 'Wakil Ketua', 'nama' => 'Sunardi',          'pendidikan' => 'S1'],
-                ['jabatan' => 'Sekretaris',  'nama' => 'Setiyaningsih',    'pendidikan' => 'SLTA'],
-                ['jabatan' => 'Anggota',     'nama' => 'Safrina Megasari', 'pendidikan' => 'SLTA'],
-                ['jabatan' => 'Anggota',     'nama' => 'Dalimin',          'pendidikan' => 'SD'],
-                ['jabatan' => 'Anggota',     'nama' => 'Hadi Muntaha',     'pendidikan' => 'SLTP'],
-                ['jabatan' => 'Anggota',     'nama' => 'Mulyono',          'pendidikan' => 'SLTA'],
-                ['jabatan' => 'Anggota',     'nama' => 'Hendy Setyawan',   'pendidikan' => 'SLTA'],
-                ['jabatan' => 'Anggota',     'nama' => 'Sari Setyaningrum','pendidikan' => 'SLTP'],
+                ['jabatan' => 'Kepala Desa',              'nama' => 'Haryono',             'foto' => asset('images/kepala-desa.jpg')],
+                ['jabatan' => 'Sekretaris Desa',          'nama' => 'Rifandaru Cahya Widhana', 'foto' => asset('images/perangkat/rifandaru-cahya-widhana.png')],
+                ['jabatan' => 'Kaur Keuangan',            'nama' => 'Prita Rahayu',        'foto' => asset('images/perangkat/prita-rahayu.png')],
+                ['jabatan' => 'Kaur Umum dan Perencanaan','nama' => 'Lilis Maesaroh',      'foto' => asset('images/perangkat/lilis-maesaroh.png')],
+                ['jabatan' => 'Kasi Pemerintahan',        'nama' => 'Noviyana',            'foto' => asset('images/perangkat/noviyana.png')],
+                ['jabatan' => 'Kasi Kesra dan Pelayanan', 'nama' => 'Maryono',             'foto' => asset('images/perangkat/maryono.png')],
+                ['jabatan' => 'Kadus I',                  'nama' => 'Subadi',              'foto' => asset('images/perangkat/subadi.png')],
+                ['jabatan' => 'Kadus II',                 'nama' => 'Haryanto',            'foto' => asset('images/perangkat/haryanto.png')],
+                ['jabatan' => 'Kadus III',                'nama' => 'Bejo',                'foto' => asset('images/perangkat/bejo.png')],
+                ['jabatan' => 'Kadus IV',                 'nama' => 'Slamet Riyadi',       'foto' => asset('images/perangkat/slamet-riyadi.png')],
             ];
         }
 
@@ -411,6 +410,7 @@ class BerandaController extends Controller
                 ['label' => 'Home',        'href' => url('/'),            'route' => 'home'],
                 ['label' => 'Profil Desa', 'href' => url('/profil'),      'route' => 'profil'],
                 ['label' => 'Infografis',  'href' => url('/infografis'),  'route' => 'infografis'],
+                ['label' => 'Layanan',     'href' => url('/layanan'),     'route' => 'layanan'],
                 ['label' => 'Berita',      'href' => url('/berita'),      'route' => 'berita*'],
                 ['label' => 'Belanja',     'href' => url('/belanja'),     'route' => 'belanja'],
             ],
@@ -423,6 +423,16 @@ class BerandaController extends Controller
             'heroTitleTop' => PengaturanWebsite::get('hero_title_top', 'Website Resmi'),
             'heroTitleBottom' => PengaturanWebsite::get('hero_title_bottom', 'Desa Bade'),
             'heroCopy' => PengaturanWebsite::get('hero_copy', ''),
+            'namaKades' => PengaturanWebsite::get('nama_kades', 'HARYONO'),
+            'jabatanKades' => PengaturanWebsite::get('jabatan_kades', 'Kepala Desa Bade'),
+            'judulSambutan' => PengaturanWebsite::get('judul_sambutan', "Assalamu'alaikum Warahmatullahi Wabarakatuh,\nSalam sejahtera bagi kita semua."),
+            'sambutanKades' => PengaturanWebsite::get('sambutan_kades', "Selamat datang di Website Resmi Desa Bade.\nWebsite ini kami hadirkan sebagai sarana informasi, pelayanan, dan transparansi penyelenggaraan pemerintahan desa."),
+            'warnaJudulSambutan' => PengaturanWebsite::get('warna_judul_sambutan', '#f3e4b2'),
+            'warnaIsiSambutan'   => PengaturanWebsite::get('warna_isi_sambutan', '#f0fdf4'),
+            'fotoKades' => $this->getImageUrl(
+                PengaturanWebsite::get('foto_kades'),
+                asset('images/kepala-desa.jpg')
+            ),
             'stats' => $stats,
             'listings' => [
                 ['title' => 'Layanan Administrasi', 'description' => 'Pelayanan administrasi kependudukan dan surat menyurat.'],
@@ -440,6 +450,7 @@ class BerandaController extends Controller
             'maritalData' => $maritalData,
             'religionData' => $religionData,
             'votersData' => $votersData,
+            'yearlyPopulationData' => $yearlyPopulationData,
             // SDGs Data
             'sdgsData' => (function() {
                 Sdgs::seedDefaultsIfEmpty();
@@ -520,7 +531,6 @@ class BerandaController extends Controller
             'shops' => $shops,
             'apbdesList' => $apbdesList,
             'perangkatDesa' => $perangkatDesa,
-            'bpdData' => $bpdData,
             'stuntingList' => Stunting::active()->get(),
             'bansosList'   => Bansos::active()->get(),
             'idmList'      => Idm::active()->get(),

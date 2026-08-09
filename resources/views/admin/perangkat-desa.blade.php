@@ -157,11 +157,20 @@
                 <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
                 Beranda
             </a>
-                    <div class="nav-section-label">Kelola Konten</div>
-        <a href="{{ route('admin.beranda') }}" class="nav-item {{ request()->routeIs('admin.beranda') ? 'active' : '' }}">
-            <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
-            <span>Kelola Beranda</span>
-        </a>
+            <div class="nav-group">
+                <div class="nav-group-header" onclick="toggleNav('beranda-menu', this)">
+                    <div class="nav-group-header-left">
+                        <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+                        <span>Kelola Beranda</span>
+                    </div>
+                    <svg id="beranda-menu-icon" class="nav-group-chevron {{ request()->routeIs('admin.beranda*') ? 'open' : '' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </div>
+                <div id="beranda-menu" class="nav-submenu open">
+                    <a href="{{ route('admin.beranda') }}" class="nav-subitem">Slide Hero Banner</a>
+                    <a href="{{ route('admin.beranda.sambutan') }}" class="nav-subitem">Sambutan Kepala Desa</a>
+                    <a href="{{ route('admin.perangkat-desa') }}" class="nav-subitem active-sub">Foto Perangkat Desa</a>
+                </div>
+            </div>
             <div class="nav-group">
                 <div class="nav-group-header" onclick="toggleNav('profil',this)">
                     <div class="nav-group-header-left">
@@ -198,6 +207,10 @@
                 </div>
             </div>
 
+        <a href="{{ route('admin.layanan') }}" class="nav-item">
+            <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/></svg>
+            <span>Kelola Layanan</span>
+        </a>
             <a href="{{ route('admin.berita') }}" class="nav-item">
                 <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6m-6 4h6"/></svg>
                 <span>Berita Desa</span>
@@ -214,6 +227,15 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
             </svg>
             <span>Pengaturan Website</span>
+        </a>
+
+        <a href="{{ route('admin.pesan') }}" class="nav-item {{ Route::is('admin.pesan') ? 'active' : '' }}" style="position:relative;">
+            <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="3" stroke-width="2"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M22 7l-10 7L2 7"/></svg>
+            <span>Kotak Pesan</span>
+            @php $unreadPesanCount = \App\Models\Pesan::where('is_read', false)->count(); @endphp
+            @if($unreadPesanCount > 0)
+            <span style="margin-left:auto;background:#ef4444;color:#fff;font-size:10px;font-weight:700;padding:2px 6px;border-radius:10px;min-width:18px;text-align:center;">{{ $unreadPesanCount > 99 ? '99+' : $unreadPesanCount }}</span>
+            @endif
         </a>
 
 <a href="{{ route('home') }}" target="_blank" class="nav-item">
@@ -242,7 +264,7 @@
     <div class="main">
         <header class="topbar">
             <div class="topbar-left">
-                <h2>Perangkat Desa &amp; BPD</h2>
+                <h2>Perangkat Desa</h2>
                 <p>Kelola struktur organisasi Desa Bade</p>
             </div>
             <div class="topbar-right">
@@ -269,15 +291,6 @@
             </div>
             @endif
 
-            <div class="tabs">
-                <button class="tab-btn active" id="tab-perangkat" onclick="switchTab('perangkat')">
-                    Perangkat Desa <span class="count">{{ $perangkat->count() }}</span>
-                </button>
-                <button class="tab-btn" id="tab-bpd" onclick="switchTab('bpd')">
-                    BPD <span class="count">{{ $bpd->count() }}</span>
-                </button>
-            </div>
-
             <!-- PANEL PERANGKAT DESA -->
             <div id="panel-perangkat" class="card">
                 <div class="card-header">
@@ -297,9 +310,9 @@
                         <thead>
                             <tr>
                                 <th class="td-no">No</th>
+                                <th>Foto</th>
                                 <th>Jabatan</th>
                                 <th>Nama</th>
-                                <th>Pendidikan</th>
                                 <th class="td-urut">Urutan</th>
                                 <th class="td-actions">Aksi</th>
                             </tr>
@@ -308,64 +321,25 @@
                             @forelse($perangkat as $i => $p)
                             <tr>
                                 <td class="td-no">{{ $i + 1 }}</td>
+                                <td>
+                                    <div style="width: 44px; height: 44px; border-radius: 10px; overflow: hidden; border: 1px solid #cbd5e1; background: #f1f5f9; display: flex; align-items: center; justify-content: center;">
+                                        @if(!empty($p->foto))
+                                            <img src="{{ asset($p->foto) }}" alt="{{ $p->nama }}" style="width: 100%; height: 100%; object-fit: cover;">
+                                        @else
+                                            <svg width="20" height="20" fill="none" stroke="#94a3b8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"/></svg>
+                                        @endif
+                                    </div>
+                                </td>
                                 <td><span class="badge-jabatan">{{ $p->jabatan }}</span></td>
                                 <td style="font-weight:600;">{{ $p->nama }}</td>
-                                <td style="color:#64748b;">{{ $p->pendidikan ?: '&mdash;' }}</td>
                                 <td class="td-urut" style="color:#94a3b8;font-weight:600;">{{ $p->urutan }}</td>
                                 <td class="td-actions">
-                                    <button class="btn-edit" onclick="openEditModal({{ $p->id }}, '{{ addslashes($p->nama) }}', '{{ addslashes($p->jabatan) }}', '{{ addslashes($p->pendidikan ?? '') }}', 'perangkat', {{ $p->urutan }})">Edit</button>
+                                    <button class="btn-edit" onclick="openEditModal({{ $p->id }}, '{{ addslashes($p->nama) }}', '{{ addslashes($p->jabatan) }}', {{ $p->urutan }})">Edit Foto & Data</button>
                                     <button class="btn-del" onclick="openDeleteModal({{ $p->id }}, '{{ addslashes($p->nama) }}')">Hapus</button>
                                 </td>
                             </tr>
                             @empty
                             <tr class="empty-row"><td colspan="6">Belum ada data Perangkat Desa. Klik <strong>Tambah Anggota</strong> untuk mulai.</td></tr>
-                            @endforelse
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- PANEL BPD -->
-            <div id="panel-bpd" class="card" style="display:none;">
-                <div class="card-header">
-                    <div>
-                        <p class="card-title">Daftar BPD (Badan Permusyawaratan Desa)</p>
-                        <p class="card-subtitle">Anggota BPD Desa Bade aktif</p>
-                    </div>
-                    <button class="btn-add" onclick="openAddModal()">
-                        <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/>
-                        </svg>
-                        Tambah Anggota
-                    </button>
-                </div>
-                <div class="table-wrap">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th class="td-no">No</th>
-                                <th>Jabatan</th>
-                                <th>Nama</th>
-                                <th>Pendidikan</th>
-                                <th class="td-urut">Urutan</th>
-                                <th class="td-actions">Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @forelse($bpd as $i => $b)
-                            <tr>
-                                <td class="td-no">{{ $i + 1 }}</td>
-                                <td><span class="badge-jabatan">{{ $b->jabatan }}</span></td>
-                                <td style="font-weight:600;">{{ $b->nama }}</td>
-                                <td style="color:#64748b;">{{ $b->pendidikan ?: '&mdash;' }}</td>
-                                <td class="td-urut" style="color:#94a3b8;font-weight:600;">{{ $b->urutan }}</td>
-                                <td class="td-actions">
-                                    <button class="btn-edit" onclick="openEditModal({{ $b->id }}, '{{ addslashes($b->nama) }}', '{{ addslashes($b->jabatan) }}', '{{ addslashes($b->pendidikan ?? '') }}', 'bpd', {{ $b->urutan }})">Edit</button>
-                                    <button class="btn-del" onclick="openDeleteModal({{ $b->id }}, '{{ addslashes($b->nama) }}')">Hapus</button>
-                                </td>
-                            </tr>
-                            @empty
-                            <tr class="empty-row"><td colspan="6">Belum ada data BPD. Klik <strong>Tambah Anggota</strong> untuk mulai.</td></tr>
                             @endforelse
                         </tbody>
                     </table>
@@ -382,39 +356,31 @@
         <div class="modal-header">
             <span class="modal-title">
                 <svg width="18" height="18" fill="none" stroke="#2e7d32" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/>
                 </svg>
                 Tambah Anggota
             </span>
             <button class="modal-close" onclick="closeModal('modal-add')">&times;</button>
         </div>
-        <form method="POST" action="{{ route('admin.perangkat-desa.store') }}">
+        <form method="POST" action="{{ route('admin.perangkat-desa.store') }}" enctype="multipart/form-data">
             @csrf
             <div class="modal-body">
                 <div class="form-group">
-                    <label class="form-label">Tipe <span class="req">*</span></label>
-                    <select name="tipe" id="add-tipe" class="form-select" required>
-                        <option value="perangkat">Perangkat Desa</option>
-                        <option value="bpd">BPD</option>
-                    </select>
-                </div>
-                <div class="form-group">
                     <label class="form-label">Jabatan <span class="req">*</span></label>
-                    <input type="text" name="jabatan" class="form-input" placeholder="cth: Kepala Desa" required maxlength="100">
+                    <input type="text" name="jabatan" class="form-input" placeholder="cth: Kaur Keuangan" required maxlength="100">
                 </div>
                 <div class="form-group">
                     <label class="form-label">Nama Lengkap <span class="req">*</span></label>
                     <input type="text" name="nama" class="form-input" placeholder="cth: Budi Santoso" required maxlength="100">
                 </div>
-                <div class="form-row">
-                    <div class="form-group" style="margin-bottom:0">
-                        <label class="form-label">Pendidikan</label>
-                        <input type="text" name="pendidikan" class="form-input" placeholder="cth: S1" maxlength="100">
-                    </div>
-                    <div class="form-group" style="margin-bottom:0">
-                        <label class="form-label">Urutan Tampil</label>
-                        <input type="number" name="urutan" class="form-input" placeholder="0" min="0" value="0">
-                    </div>
+                <div class="form-group">
+                    <label class="form-label">Foto Resmi Anggota</label>
+                    <input type="file" name="foto" class="form-input" accept="image/*">
+                    <p style="font-size: 11px; color: #64748b; margin-top: 4px;">Pilih berkas foto format JPG, PNG, atau WEBP max 10MB.</p>
+                </div>
+                <div class="form-group" style="margin-bottom:0">
+                    <label class="form-label">Urutan Tampil</label>
+                    <input type="number" name="urutan" class="form-input" placeholder="0" min="0" value="0">
                 </div>
             </div>
             <div class="modal-footer">
@@ -433,21 +399,14 @@
                 <svg width="18" height="18" fill="none" stroke="#2e7d32" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
                 </svg>
-                Edit Anggota
+                Edit Anggota & Unggah Foto
             </span>
             <button class="modal-close" onclick="closeModal('modal-edit')">&times;</button>
         </div>
-        <form method="POST" id="form-edit" action="">
+        <form method="POST" id="form-edit" action="" enctype="multipart/form-data">
             @csrf
             @method('PUT')
             <div class="modal-body">
-                <div class="form-group">
-                    <label class="form-label">Tipe <span class="req">*</span></label>
-                    <select name="tipe" id="edit-tipe" class="form-select" required>
-                        <option value="perangkat">Perangkat Desa</option>
-                        <option value="bpd">BPD</option>
-                    </select>
-                </div>
                 <div class="form-group">
                     <label class="form-label">Jabatan <span class="req">*</span></label>
                     <input type="text" name="jabatan" id="edit-jabatan" class="form-input" required maxlength="100">
@@ -456,15 +415,14 @@
                     <label class="form-label">Nama Lengkap <span class="req">*</span></label>
                     <input type="text" name="nama" id="edit-nama" class="form-input" required maxlength="100">
                 </div>
-                <div class="form-row">
-                    <div class="form-group" style="margin-bottom:0">
-                        <label class="form-label">Pendidikan</label>
-                        <input type="text" name="pendidikan" id="edit-pendidikan" class="form-input" maxlength="100">
-                    </div>
-                    <div class="form-group" style="margin-bottom:0">
-                        <label class="form-label">Urutan Tampil</label>
-                        <input type="number" name="urutan" id="edit-urutan" class="form-input" min="0">
-                    </div>
+                <div class="form-group">
+                    <label class="form-label">Ganti Foto Resmi Anggota</label>
+                    <input type="file" name="foto" class="form-input" accept="image/*">
+                    <p style="font-size: 11px; color: #64748b; margin-top: 4px;">Kosongkan jika tidak ingin mengubah foto yang ada saat ini.</p>
+                </div>
+                <div class="form-group" style="margin-bottom:0">
+                    <label class="form-label">Urutan Tampil</label>
+                    <input type="number" name="urutan" id="edit-urutan" class="form-input" min="0">
                 </div>
             </div>
             <div class="modal-footer">
@@ -506,16 +464,6 @@
         document.getElementById(id+'-icon').classList.toggle('open');
     }
 
-    let activeTab = 'perangkat';
-    function switchTab(tab) {
-        activeTab = tab;
-        document.getElementById('panel-perangkat').style.display = tab === 'perangkat' ? '' : 'none';
-        document.getElementById('panel-bpd').style.display = tab === 'bpd' ? '' : 'none';
-        document.getElementById('tab-perangkat').classList.toggle('active', tab === 'perangkat');
-        document.getElementById('tab-bpd').classList.toggle('active', tab === 'bpd');
-        document.getElementById('add-tipe').value = tab;
-    }
-
     function openModal(id) { document.getElementById(id).classList.add('open'); }
     function closeModal(id) { document.getElementById(id).classList.remove('open'); }
 
@@ -529,16 +477,13 @@
     });
 
     function openAddModal() {
-        document.getElementById('add-tipe').value = activeTab;
         openModal('modal-add');
     }
 
-    function openEditModal(id, nama, jabatan, pendidikan, tipe, urutan) {
+    function openEditModal(id, nama, jabatan, urutan) {
         document.getElementById('form-edit').action = `/admin/perangkat-desa/${id}`;
         document.getElementById('edit-nama').value = nama;
         document.getElementById('edit-jabatan').value = jabatan;
-        document.getElementById('edit-pendidikan').value = pendidikan;
-        document.getElementById('edit-tipe').value = tipe;
         document.getElementById('edit-urutan').value = urutan;
         openModal('modal-edit');
     }

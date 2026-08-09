@@ -14,36 +14,23 @@ class PerangkatDesaSeeder extends Seeder
 
         // Perangkat Desa
         $perangkat = [
-            ['jabatan' => 'Kepala Desa',               'nama' => 'Haryono',                'pendidikan' => 'SMA',  'tipe' => 'perangkat', 'urutan' => 1],
-            ['jabatan' => 'Sekretaris Desa',            'nama' => 'Rifandaru Cahya Widhana','pendidikan' => 'S1',   'tipe' => 'perangkat', 'urutan' => 2],
-            ['jabatan' => 'Kaur Keuangan',              'nama' => 'Prita Rahayu',           'pendidikan' => 'D3',   'tipe' => 'perangkat', 'urutan' => 3],
-            ['jabatan' => 'Kaur Umum dan Perencanaan',  'nama' => 'Lilis Maesaroh',         'pendidikan' => 'SLTA', 'tipe' => 'perangkat', 'urutan' => 4],
-            ['jabatan' => 'Kasi Pemerintahan',          'nama' => 'Noviyana',               'pendidikan' => 'S1',   'tipe' => 'perangkat', 'urutan' => 5],
-            ['jabatan' => 'Kasi Kesra dan Pelayanan',   'nama' => 'Maryono',                'pendidikan' => 'SLTA', 'tipe' => 'perangkat', 'urutan' => 6],
-            ['jabatan' => 'Kadus I',                    'nama' => 'Subadi',                 'pendidikan' => 'SLTA', 'tipe' => 'perangkat', 'urutan' => 7],
-            ['jabatan' => 'Kadus II',                   'nama' => 'Haryanto',               'pendidikan' => 'SLTA', 'tipe' => 'perangkat', 'urutan' => 8],
-            ['jabatan' => 'Kadus III',                  'nama' => 'Bejo',                   'pendidikan' => 'SLTA', 'tipe' => 'perangkat', 'urutan' => 9],
-            ['jabatan' => 'Kadus IV',                   'nama' => 'Slamet Riyadi',          'pendidikan' => 'SLTA', 'tipe' => 'perangkat', 'urutan' => 10],
-        ];
-
-        // BPD
-        $bpd = [
-            ['jabatan' => 'Ketua',       'nama' => 'Sutardi',           'pendidikan' => 'SLTA', 'tipe' => 'bpd', 'urutan' => 1],
-            ['jabatan' => 'Wakil Ketua', 'nama' => 'Sunardi',           'pendidikan' => 'S1',   'tipe' => 'bpd', 'urutan' => 2],
-            ['jabatan' => 'Sekretaris',  'nama' => 'Setiyaningsih',     'pendidikan' => 'SLTA', 'tipe' => 'bpd', 'urutan' => 3],
-            ['jabatan' => 'Anggota',     'nama' => 'Safrina Megasari',  'pendidikan' => 'SLTA', 'tipe' => 'bpd', 'urutan' => 4],
-            ['jabatan' => 'Anggota',     'nama' => 'Dalimin',           'pendidikan' => 'SD',   'tipe' => 'bpd', 'urutan' => 5],
-            ['jabatan' => 'Anggota',     'nama' => 'Hadi Muntaha',      'pendidikan' => 'SLTP', 'tipe' => 'bpd', 'urutan' => 6],
-            ['jabatan' => 'Anggota',     'nama' => 'Mulyono',           'pendidikan' => 'SLTA', 'tipe' => 'bpd', 'urutan' => 7],
-            ['jabatan' => 'Anggota',     'nama' => 'Hendy Setyawan',    'pendidikan' => 'SLTA', 'tipe' => 'bpd', 'urutan' => 8],
-            ['jabatan' => 'Anggota',     'nama' => 'Sari Setyaningrum', 'pendidikan' => 'SLTP', 'tipe' => 'bpd', 'urutan' => 9],
+            ['jabatan' => 'Kepala Desa',               'nama' => 'Haryono',                'tipe' => 'perangkat', 'urutan' => 1, 'foto' => 'images/kepala-desa.jpg'],
+            ['jabatan' => 'Sekretaris Desa',            'nama' => 'Rifandaru Cahya Widhana','tipe' => 'perangkat', 'urutan' => 2, 'foto' => 'images/perangkat/rifandaru-cahya-widhana.png'],
+            ['jabatan' => 'Kaur Keuangan',              'nama' => 'Prita Rahayu',           'tipe' => 'perangkat', 'urutan' => 3, 'foto' => 'images/perangkat/prita-rahayu.png'],
+            ['jabatan' => 'Kaur Umum dan Perencanaan',  'nama' => 'Lilis Maesaroh',         'tipe' => 'perangkat', 'urutan' => 4, 'foto' => 'images/perangkat/lilis-maesaroh.png'],
+            ['jabatan' => 'Kasi Pemerintahan',          'nama' => 'Noviyana',               'tipe' => 'perangkat', 'urutan' => 5, 'foto' => 'images/perangkat/noviyana.png'],
+            ['jabatan' => 'Kasi Kesra dan Pelayanan',   'nama' => 'Maryono',                'tipe' => 'perangkat', 'urutan' => 6, 'foto' => 'images/perangkat/maryono.png'],
+            ['jabatan' => 'Kadus I',                    'nama' => 'Subadi',                 'tipe' => 'perangkat', 'urutan' => 7, 'foto' => 'images/perangkat/subadi.png'],
+            ['jabatan' => 'Kadus II',                   'nama' => 'Haryanto',               'tipe' => 'perangkat', 'urutan' => 8, 'foto' => 'images/perangkat/haryanto.png'],
+            ['jabatan' => 'Kadus III',                  'nama' => 'Bejo',                   'tipe' => 'perangkat', 'urutan' => 9, 'foto' => 'images/perangkat/bejo.png'],
+            ['jabatan' => 'Kadus IV',                   'nama' => 'Slamet Riyadi',          'tipe' => 'perangkat', 'urutan' => 10, 'foto' => 'images/perangkat/slamet-riyadi.png'],
         ];
 
         $now = now();
         $rows = [];
 
-        foreach (array_merge($perangkat, $bpd) as $data) {
-            $rows[] = array_merge($data, ['foto' => null, 'created_at' => $now, 'updated_at' => $now]);
+        foreach ($perangkat as $data) {
+            $rows[] = array_merge($data, ['created_at' => $now, 'updated_at' => $now]);
         }
 
         DB::table('perangkat_desa')->insert($rows);

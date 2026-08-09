@@ -66,6 +66,14 @@ class StatistikPendudukSeeder extends Seeder
             ['kategori' => 'pemilih', 'label' => '2024', 'value_laki' => 402, 'value_perempuan' => 402, 'urutan' => 1],
             ['kategori' => 'pemilih', 'label' => '2025', 'value_laki' => 414, 'value_perempuan' => 414, 'urutan' => 2],
             ['kategori' => 'pemilih', 'label' => '2026', 'value_laki' => 427, 'value_perempuan' => 427, 'urutan' => 3],
+
+            // Jumlah Penduduk Per Tahun
+            ['kategori' => 'tahun_penduduk', 'label' => '2020', 'value_laki' => 2280, 'value_perempuan' => 2240, 'urutan' => 1],
+            ['kategori' => 'tahun_penduduk', 'label' => '2021', 'value_laki' => 2315, 'value_perempuan' => 2270, 'urutan' => 2],
+            ['kategori' => 'tahun_penduduk', 'label' => '2022', 'value_laki' => 2350, 'value_perempuan' => 2290, 'urutan' => 3],
+            ['kategori' => 'tahun_penduduk', 'label' => '2023', 'value_laki' => 2390, 'value_perempuan' => 2305, 'urutan' => 4],
+            ['kategori' => 'tahun_penduduk', 'label' => '2024', 'value_laki' => 2420, 'value_perempuan' => 2318, 'urutan' => 5],
+            ['kategori' => 'tahun_penduduk', 'label' => '2025', 'value_laki' => 2457, 'value_perempuan' => 2325, 'urutan' => 6],
         ];
 
         StatistikPenduduk::insert($data);

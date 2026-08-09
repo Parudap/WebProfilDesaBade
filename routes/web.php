@@ -7,7 +7,11 @@ use App\Http\Controllers\Admin\PerangkatDesaController;
 use App\Http\Controllers\Admin\InfografisController;
 use App\Http\Controllers\Admin\BeritaController;
 use App\Http\Controllers\Admin\BelanjaController;
+use App\Http\Controllers\Admin\PesanController;
+use App\Http\Controllers\Admin\LayananController as AdminLayananController;
+use App\Http\Controllers\Public\PesanController as PublicPesanController;
 use App\Http\Controllers\Public\BerandaController;
+use App\Http\Controllers\Public\LayananController as PublicLayananController;
 use App\Http\Middleware\EnsureAdmin;
 use Illuminate\Support\Facades\Route;
 
@@ -20,7 +24,9 @@ Route::get('/berita', [BerandaController::class, 'berita'])->name('berita');
 Route::get('/berita/{slug}', [BerandaController::class, 'berita'])->name('berita.show');
 Route::get('/belanja', [BerandaController::class, 'belanja'])->name('belanja');
 Route::get('/belanja/{slug}', [BerandaController::class, 'belanjaShow'])->name('belanja.show');
+Route::get('/layanan', [PublicLayananController::class, 'index'])->name('layanan');
 Route::get('/kontak', [BerandaController::class, 'kontak'])->name('kontak');
+Route::post('/kritik-saran', [PublicPesanController::class, 'store'])->name('pesan.store');
 Route::get('/apbdes-pdf/{id}/{filename?}', [BerandaController::class, 'apbdesPdf'])->name('apbdes.stream_pdf');
 Route::get('/stunting-pdf/{id}/{filename?}', [BerandaController::class, 'stuntingPdf'])->name('stunting.stream_pdf');
 Route::get('/bansos-pdf/{id}/{filename?}', [BerandaController::class, 'bansosPdf'])->name('bansos.stream_pdf');
@@ -100,5 +106,28 @@ Route::prefix('admin')->group(function () {
         // Kelola Beranda
         Route::get('/beranda', [\App\Http\Controllers\Admin\PengaturanController::class, 'beranda'])->name('admin.beranda');
         Route::put('/beranda', [\App\Http\Controllers\Admin\PengaturanController::class, 'berandaUpdate'])->name('admin.beranda.update');
+        Route::get('/beranda/sambutan', [\App\Http\Controllers\Admin\PengaturanController::class, 'sambutan'])->name('admin.beranda.sambutan');
+        Route::put('/beranda/sambutan', [\App\Http\Controllers\Admin\PengaturanController::class, 'sambutanUpdate'])->name('admin.beranda.sambutan.update');
+
+        // Kotak Pesan
+        Route::get('/pesan', [PesanController::class, 'index'])->name('admin.pesan');
+        Route::patch('/pesan/{pesan}/read', [PesanController::class, 'markRead'])->name('admin.pesan.read');
+        Route::post('/pesan/read-all', [PesanController::class, 'markAllRead'])->name('admin.pesan.read-all');
+        Route::delete('/pesan/{pesan}', [PesanController::class, 'destroy'])->name('admin.pesan.destroy');
+
+        // Layanan Desa
+        Route::get('/layanan', [AdminLayananController::class, 'index'])->name('admin.layanan');
+        // Kategori
+        Route::post('/layanan/kategori', [AdminLayananController::class, 'storeKategori'])->name('admin.layanan.kategori.store');
+        Route::put('/layanan/kategori/{kategori}', [AdminLayananController::class, 'updateKategori'])->name('admin.layanan.kategori.update');
+        Route::delete('/layanan/kategori/{kategori}', [AdminLayananController::class, 'destroyKategori'])->name('admin.layanan.kategori.destroy');
+        // Item
+        Route::post('/layanan/item', [AdminLayananController::class, 'storeItem'])->name('admin.layanan.item.store');
+        Route::put('/layanan/item/{item}', [AdminLayananController::class, 'updateItem'])->name('admin.layanan.item.update');
+        Route::delete('/layanan/item/{item}', [AdminLayananController::class, 'destroyItem'])->name('admin.layanan.item.destroy');
+        // Syarat
+        Route::post('/layanan/syarat', [AdminLayananController::class, 'storeSyarat'])->name('admin.layanan.syarat.store');
+        Route::put('/layanan/syarat/{syarat}', [AdminLayananController::class, 'updateSyarat'])->name('admin.layanan.syarat.update');
+        Route::delete('/layanan/syarat/{syarat}', [AdminLayananController::class, 'destroySyarat'])->name('admin.layanan.syarat.destroy');
     });
 });

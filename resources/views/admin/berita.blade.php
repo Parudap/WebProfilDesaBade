@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="id"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+﻿<!DOCTYPE html><html lang="id"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Kelola Berita Desa - Admin Desa Bade</title>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>h1, h2, h3, h4, h5, h6 { font-family: 'Cinzel', serif; } 
@@ -112,6 +112,19 @@ td{padding:12px 16px;font-size:13px;color:#334155;vertical-align:middle}
 .confirm-text h3{font-size:16px;font-weight:700;color:#1e293b;margin:0 0 6px}
 .confirm-text p{font-size:13px;color:#64748b;margin:0}
 .btn-danger{padding:10px 22px;background:#ef4444;color:white;border-radius:9px;font-size:13px;font-weight:600;border:none;cursor:pointer;font-family:inherit}
+/* === Foto Upload UI === */
+.foto-group .form-label{display:flex;align-items:center;justify-content:space-between}
+.foto-counter{font-size:11px;font-weight:700;padding:2px 8px;border-radius:20px;background:#f3f4f6;color:#6b7280;letter-spacing:.2px;transition:all .2s}
+.foto-upload-zone{border:2px dashed #d1d5db;border-radius:12px;padding:18px 12px;text-align:center;cursor:pointer;transition:all .2s;background:#fafafa}
+.foto-upload-zone:hover{border-color:#2e7d32;background:#f0fdf4}
+.foto-preview-grid{display:flex;flex-wrap:wrap;gap:10px}
+.foto-thumb-card{position:relative;flex-shrink:0}
+.foto-thumb-img{width:80px;height:80px;object-fit:cover;border-radius:10px;border:2px solid #e2e8f0;display:block}
+.foto-thumb-label{display:block;text-align:center;font-size:10px;font-weight:600;color:#6b7280;margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:80px}
+.foto-thumb-card:first-child .foto-thumb-img{border-color:#2e7d32}
+.foto-thumb-card:first-child .foto-thumb-label{color:#2e7d32}
+.foto-thumb-del{position:absolute;top:-6px;right:-6px;background:#ef4444;color:#fff;border:2px solid #fff;border-radius:50%;width:20px;height:20px;font-size:14px;font-weight:bold;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 4px rgba(0,0,0,.2);padding:0;font-family:inherit}
+.foto-thumb-del:hover{background:#dc2626;transform:scale(1.1)}
 </style>
 </head>
 <body>
@@ -148,6 +161,10 @@ td{padding:12px 16px;font-size:13px;color:#334155;vertical-align:middle}
                 <a href="{{ route('admin.infografis.sdgs') }}" class="nav-subitem">SDGs</a>
             </div>
         </div>
+        <a href="{{ route('admin.layanan') }}" class="nav-item">
+            <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/></svg>
+            <span>Kelola Layanan</span>
+        </a>
         <a href="{{ route('admin.berita') }}" class="nav-item active">
             <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6m-6 4h6"/></svg>
             <span>Berita Desa</span>
@@ -163,6 +180,15 @@ td{padding:12px 16px;font-size:13px;color:#334155;vertical-align:middle}
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
             </svg>
             <span>Pengaturan Website</span>
+        </a>
+
+        <a href="{{ route('admin.pesan') }}" class="nav-item {{ Route::is('admin.pesan') ? 'active' : '' }}" style="position:relative;">
+            <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="3" stroke-width="2"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M22 7l-10 7L2 7"/></svg>
+            <span>Kotak Pesan</span>
+            @php $unreadPesanCount = \App\Models\Pesan::where('is_read', false)->count(); @endphp
+            @if($unreadPesanCount > 0)
+            <span style="margin-left:auto;background:#ef4444;color:#fff;font-size:10px;font-weight:700;padding:2px 6px;border-radius:10px;min-width:18px;text-align:center;">{{ $unreadPesanCount > 99 ? '99+' : $unreadPesanCount }}</span>
+            @endif
         </a>
 
 <a href="{{ route('home') }}" target="_blank" class="nav-item"><svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>Lihat Website</a>
@@ -328,11 +354,19 @@ td{padding:12px 16px;font-size:13px;color:#334155;vertical-align:middle}
                     <textarea id="add-content" name="content" class="form-textarea" style="min-height:160px;border-radius:0 0 9px 9px" placeholder="Tuliskan isi berita secara mendalam..." required></textarea>
                 </div>
                 <div class="form-row">
-                    <div class="form-group">
-                        <label class="form-label">Gambar Berita (Bisa Pilih Banyak Foto)</label>
-                        <input type="file" name="images[]" class="form-input" accept="image/*" multiple onchange="previewFiles(this, 'preview-add-berita')">
-                        <small style="color:#6b7280;font-size:11px;margin-top:4px;display:block">Tahan Ctrl/Shift untuk memilih beberapa foto sekaligus</small>
-                        <div id="preview-add-berita" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px"></div>
+                    <div class="form-group foto-group">
+                        <label class="form-label">
+                            Foto Berita
+                            <span class="foto-counter" id="counter-add-berita">0 / 5</span>
+                        </label>
+                        <div class="foto-upload-zone" id="zone-add-berita" onclick="document.getElementById('input-add-berita').click()">
+                            <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" style="color:#9ca3af"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                            <p style="margin:6px 0 4px;font-size:13px;font-weight:600;color:#374151">Klik untuk pilih foto</p>
+                            <p style="margin:0;font-size:11.5px;color:#9ca3af">Maks. 5 foto &bull; JPG, PNG, WebP &bull; Maks. 10MB/foto</p>
+                        </div>
+                        <input type="file" id="input-add-berita" name="images[]" accept="image/*" multiple style="display:none" onchange="handleBeritaFiles(this, 'preview-add-berita', 'counter-add-berita', 'zone-add-berita')">
+                        <div id="preview-add-berita" class="foto-preview-grid" style="margin-top:10px"></div>
+                        @error('images')<span style="font-size:12px;color:#ef4444;margin-top:4px;display:block">{{ $message }}</span>@enderror
                     </div>
                     <div class="form-group">
                         <label class="form-label">Penulis (Author)</label>
@@ -388,16 +422,23 @@ td{padding:12px 16px;font-size:13px;color:#334155;vertical-align:middle}
                     </div>
                     <textarea id="edit-content" name="content" class="form-textarea" style="min-height:160px;border-radius:0 0 9px 9px" required></textarea>
                 </div>
-                <div class="form-group">
-                    <label class="form-label">Foto Berita Saat Ini</label>
-                    <div id="existing-images-edit-berita" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:8px"></div>
+                <div class="form-group foto-group">
+                    <label class="form-label">
+                        Foto Berita Saat Ini
+                        <span class="foto-counter" id="counter-edit-berita">0 / 5</span>
+                    </label>
+                    <div id="existing-images-edit-berita" class="foto-preview-grid" style="margin-bottom:10px"></div>
                 </div>
                 <div class="form-row">
-                    <div class="form-group">
-                        <label class="form-label">Tambah Foto Galeri (Bisa Pilih Banyak)</label>
-                        <input type="file" name="images[]" class="form-input" accept="image/*" multiple onchange="previewFiles(this, 'preview-edit-berita')">
-                        <small style="color:#6b7280;font-size:11px;margin-top:4px;display:block">Foto baru akan ditambahkan ke galeri berita</small>
-                        <div id="preview-edit-berita" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px"></div>
+                    <div class="form-group foto-group">
+                        <label class="form-label">Tambah Foto Baru</label>
+                        <div class="foto-upload-zone" id="zone-edit-berita" onclick="document.getElementById('input-edit-berita').click()">
+                            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" style="color:#9ca3af"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+                            <p style="margin:4px 0 0;font-size:12.5px;color:#6b7280">Tambah foto (total maks. 5)</p>
+                        </div>
+                        <input type="file" id="input-edit-berita" name="images[]" accept="image/*" multiple style="display:none" onchange="handleBeritaFiles(this, 'preview-edit-berita', 'counter-edit-berita', 'zone-edit-berita')">
+                        <div id="preview-edit-berita" class="foto-preview-grid" style="margin-top:10px"></div>
+                        @error('images')<span style="font-size:12px;color:#ef4444;margin-top:4px;display:block">{{ $message }}</span>@enderror
                     </div>
                     <div class="form-group">
                         <label class="form-label">Penulis</label>
@@ -445,59 +486,101 @@ document.querySelectorAll('.adm-backdrop').forEach(el=>el.addEventListener('clic
 
 const beritaData = @json($newsList->keyBy('id'));
 
-function previewFiles(input, containerId) {
-    const container = document.getElementById(containerId);
-    container.innerHTML = '';
-    if (input.files && input.files.length > 0) {
-        Array.from(input.files).forEach(file => {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const wrapper = document.createElement('div');
-                wrapper.style.position = 'relative';
-                wrapper.style.display = 'inline-block';
+const MAX_FOTO = 5;
 
-                const img = document.createElement('img');
-                img.src = e.target.result;
-                img.style.width = '64px';
-                img.style.height = '64px';
-                img.style.objectFit = 'cover';
-                img.style.borderRadius = '8px';
-                img.style.border = '2px solid #2e7d32';
-                img.title = file.name;
+// State untuk file baru yang dipilih di modal tambah
+let addBeritaFiles = [];
 
-                const btn = document.createElement('button');
-                btn.type = 'button';
-                btn.innerHTML = '&times;';
-                btn.title = 'Batal upload foto ini';
-                btn.style.position = 'absolute';
-                btn.style.top = '-6px';
-                btn.style.right = '-6px';
-                btn.style.background = '#ef4444';
-                btn.style.color = '#ffffff';
-                btn.style.border = '2px solid #ffffff';
-                btn.style.borderRadius = '50%';
-                btn.style.width = '20px';
-                btn.style.height = '20px';
-                btn.style.fontSize = '14px';
-                btn.style.fontWeight = 'bold';
-                btn.style.lineHeight = '1';
-                btn.style.cursor = 'pointer';
-                btn.style.display = 'flex';
-                btn.style.alignItems = 'center';
-                btn.style.justifyContent = 'center';
-                btn.style.boxShadow = '0 2px 4px rgba(0,0,0,0.2)';
+function updateCounter(counterId, count) {
+    const el = document.getElementById(counterId);
+    if (!el) return;
+    el.textContent = count + ' / ' + MAX_FOTO;
+    el.style.background = count >= MAX_FOTO ? '#fee2e2' : (count > 0 ? '#dcfce7' : '#f3f4f6');
+    el.style.color = count >= MAX_FOTO ? '#dc2626' : (count > 0 ? '#15803d' : '#6b7280');
+}
 
-                btn.onclick = function() {
-                    wrapper.remove();
-                };
-
-                wrapper.appendChild(img);
-                wrapper.appendChild(btn);
-                container.appendChild(wrapper);
-            };
-            reader.readAsDataURL(file);
-        });
+function updateZoneState(zoneId, count) {
+    const zone = document.getElementById(zoneId);
+    if (!zone) return;
+    if (count >= MAX_FOTO) {
+        zone.style.opacity = '0.45';
+        zone.style.pointerEvents = 'none';
+        zone.style.cursor = 'not-allowed';
+    } else {
+        zone.style.opacity = '1';
+        zone.style.pointerEvents = 'auto';
+        zone.style.cursor = 'pointer';
     }
+}
+
+function createThumbCard(src, labelText, onRemove) {
+    const wrapper = document.createElement('div');
+    wrapper.className = 'foto-thumb-card';
+
+    const img = document.createElement('img');
+    img.src = src;
+    img.className = 'foto-thumb-img';
+
+    const label = document.createElement('span');
+    label.className = 'foto-thumb-label';
+    label.textContent = labelText;
+
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'foto-thumb-del';
+    btn.innerHTML = '&times;';
+    btn.title = 'Hapus foto ini';
+    btn.onclick = onRemove;
+
+    wrapper.appendChild(img);
+    wrapper.appendChild(label);
+    wrapper.appendChild(btn);
+    return wrapper;
+}
+
+function handleBeritaFiles(input, previewId, counterId, zoneId) {
+    const container = document.getElementById(previewId);
+    if (!container) return;
+
+    // Untuk modal tambah — hitung existing foto (tidak ada)
+    const existingCount = previewId.includes('edit') ? getEditExistingCount() : 0;
+    const availableSlots = MAX_FOTO - existingCount;
+
+    if (availableSlots <= 0) {
+        alert('Sudah mencapai batas maksimum 5 foto. Hapus beberapa foto yang ada terlebih dahulu.');
+        input.value = '';
+        return;
+    }
+
+    const files = Array.from(input.files).slice(0, availableSlots);
+    if (Array.from(input.files).length > availableSlots) {
+        alert('Hanya ' + availableSlots + ' foto lagi yang dapat ditambahkan (batas maks. 5). Foto kelebihan diabaikan.');
+    }
+
+    container.innerHTML = '';
+
+    files.forEach((file, idx) => {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const labelText = (existingCount === 0 && idx === 0) ? 'Foto Utama' : ('Foto ' + (existingCount + idx + 1));
+            const card = createThumbCard(e.target.result, labelText, function() {
+                card.remove();
+                const newCount = existingCount + container.querySelectorAll('.foto-thumb-card').length;
+                updateCounter(counterId, newCount);
+                updateZoneState(zoneId, newCount);
+            });
+            container.appendChild(card);
+            const newCount = existingCount + container.querySelectorAll('.foto-thumb-card').length;
+            updateCounter(counterId, newCount);
+            updateZoneState(zoneId, newCount);
+        };
+        reader.readAsDataURL(file);
+    });
+}
+
+function getEditExistingCount() {
+    const el = document.getElementById('existing-images-edit-berita');
+    return el ? el.querySelectorAll('.foto-thumb-card').length : 0;
 }
 
 function openEditModal(id){
@@ -517,68 +600,42 @@ function openEditModal(id){
 
     // Clean any previous hidden delete_images inputs
     document.querySelectorAll('#form-edit input[name="delete_images[]"]').forEach(el => el.remove());
+    // Reset new file input & preview
+    const inputEdit = document.getElementById('input-edit-berita');
+    if (inputEdit) inputEdit.value = '';
+    const editPreview = document.getElementById('preview-edit-berita');
+    if (editPreview) editPreview.innerHTML = '';
 
     const existingContainer = document.getElementById('existing-images-edit-berita');
     if (existingContainer) {
         existingContainer.innerHTML = '';
         let imgs = item.images && item.images.length ? item.images : (item.image ? [item.image] : []);
         if (imgs.length > 0) {
-            imgs.forEach(imgPath => {
-                const wrapper = document.createElement('div');
-                wrapper.style.position = 'relative';
-                wrapper.style.display = 'inline-block';
-
+            imgs.forEach((imgPath, idx) => {
                 const src = imgPath.startsWith('http') ? imgPath : '/storage/' + imgPath;
-                const img = document.createElement('img');
-                img.src = src;
-                img.style.width = '64px';
-                img.style.height = '64px';
-                img.style.objectFit = 'cover';
-                img.style.borderRadius = '8px';
-                img.style.border = '1px solid #d1d5db';
-                img.title = 'Foto Tersimpan';
-
-                const btn = document.createElement('button');
-                btn.type = 'button';
-                btn.innerHTML = '&times;';
-                btn.title = 'Hapus foto ini';
-                btn.style.position = 'absolute';
-                btn.style.top = '-6px';
-                btn.style.right = '-6px';
-                btn.style.background = '#ef4444';
-                btn.style.color = '#ffffff';
-                btn.style.border = '2px solid #ffffff';
-                btn.style.borderRadius = '50%';
-                btn.style.width = '20px';
-                btn.style.height = '20px';
-                btn.style.fontSize = '14px';
-                btn.style.fontWeight = 'bold';
-                btn.style.lineHeight = '1';
-                btn.style.cursor = 'pointer';
-                btn.style.display = 'flex';
-                btn.style.alignItems = 'center';
-                btn.style.justifyContent = 'center';
-                btn.style.boxShadow = '0 2px 4px rgba(0,0,0,0.2)';
-
-                btn.onclick = function() {
+                const labelText = idx === 0 ? 'Foto Utama' : ('Foto ' + (idx + 1));
+                const card = createThumbCard(src, labelText, function() {
                     const hidden = document.createElement('input');
                     hidden.type = 'hidden';
                     hidden.name = 'delete_images[]';
                     hidden.value = imgPath;
                     document.getElementById('form-edit').appendChild(hidden);
-                    wrapper.remove();
-                };
-
-                wrapper.appendChild(img);
-                wrapper.appendChild(btn);
-                existingContainer.appendChild(wrapper);
+                    card.remove();
+                    // Update counter
+                    const remaining = existingContainer.querySelectorAll('.foto-thumb-card').length;
+                    const newAdded = editPreview ? editPreview.querySelectorAll('.foto-thumb-card').length : 0;
+                    updateCounter('counter-edit-berita', remaining + newAdded);
+                    updateZoneState('zone-edit-berita', remaining + newAdded);
+                });
+                existingContainer.appendChild(card);
             });
         } else {
             existingContainer.innerHTML = '<span style="font-size:12px;color:#9ca3af">Belum ada foto</span>';
         }
+        const totalNow = imgs.length;
+        updateCounter('counter-edit-berita', totalNow);
+        updateZoneState('zone-edit-berita', totalNow);
     }
-    const editPreview = document.getElementById('preview-edit-berita');
-    if (editPreview) editPreview.innerHTML = '';
 
     openModal('modal-edit');
 }

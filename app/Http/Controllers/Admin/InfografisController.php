@@ -18,7 +18,7 @@ class InfografisController extends Controller
     // ── PENDUDUK ──────────────────────────────────────────────
     public function penduduk()
     {
-        $kategoriList = ['usia','pendidikan','pekerjaan','agama','perkawinan','pemilih'];
+        $kategoriList = ['tahun_penduduk','usia','pendidikan','pekerjaan','agama','perkawinan','pemilih'];
         $data = [];
         foreach ($kategoriList as $k) {
             $data[$k] = StatistikPenduduk::getByKategori($k);

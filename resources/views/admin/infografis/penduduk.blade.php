@@ -158,6 +158,10 @@
                 <a href="{{ route('admin.infografis.sdgs') }}" class="nav-subitem">SDGs</a>
             </div>
         </div>
+        <a href="{{ route('admin.layanan') }}" class="nav-item">
+            <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/></svg>
+            <span>Kelola Layanan</span>
+        </a>
         <a href="{{ route('admin.berita') }}" class="nav-item">
             <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6m-6 4h6"/></svg>
             <span>Berita Desa</span>
@@ -173,6 +177,15 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
             </svg>
             <span>Pengaturan Website</span>
+        </a>
+
+        <a href="{{ route('admin.pesan') }}" class="nav-item {{ Route::is('admin.pesan') ? 'active' : '' }}" style="position:relative;">
+            <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="3" stroke-width="2"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M22 7l-10 7L2 7"/></svg>
+            <span>Kotak Pesan</span>
+            @php $unreadPesanCount = \App\Models\Pesan::where('is_read', false)->count(); @endphp
+            @if($unreadPesanCount > 0)
+            <span style="margin-left:auto;background:#ef4444;color:#fff;font-size:10px;font-weight:700;padding:2px 6px;border-radius:10px;min-width:18px;text-align:center;">{{ $unreadPesanCount > 99 ? '99+' : $unreadPesanCount }}</span>
+            @endif
         </a>
 
 <a href="{{ route('home') }}" target="_blank" class="nav-item">
@@ -213,8 +226,8 @@
         @endif
 
         @php 
-            $activeTab = session('active_tab', request('tab', 'usia')); 
-            $tabs = [['usia','Usia'],['pendidikan','Pendidikan'],['pekerjaan','Pekerjaan'],['agama','Agama'],['perkawinan','Perkawinan'],['pemilih','Pemilih'],['dusun','Dusun']];
+            $activeTab = session('active_tab', request('tab', 'tahun_penduduk')); 
+            $tabs = [['tahun_penduduk','Per Tahun'],['usia','Usia'],['pendidikan','Pendidikan'],['pekerjaan','Pekerjaan'],['agama','Agama'],['perkawinan','Perkawinan'],['pemilih','Pemilih'],['dusun','Dusun']];
         @endphp
 
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
@@ -225,7 +238,7 @@
                 </button>
                 @endforeach
             </div>
-            <button class="btn-add" onclick="openAddModal()">
+            <button class="btn-add" id="btn-tambah-data" onclick="openAddModal()" style="{{ in_array($activeTab, ['agama','perkawinan','dusun']) ? 'display:none' : '' }}">
                 <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/></svg>
                 Tambah Data
             </button>
@@ -256,7 +269,9 @@
                             <td style="text-align:center;color:#94a3b8">{{ $item->urutan }}</td>
                             <td class="td-actions">
                                 <button class="btn-edit" onclick="openEditModal({{ $item->id }},'{{ addslashes($item->label) }}','{{ $item->kategori }}',{{ $item->value_laki }},{{ $item->value_perempuan }},{{ $item->urutan }})">Edit</button>
+                                @if(!in_array($k, ['agama','perkawinan']))
                                 <button class="btn-del" onclick="openDeleteModal({{ $item->id }},'{{ addslashes($item->label) }}')">Hapus</button>
+                                @endif
                             </td>
                         </tr>
                         @empty
@@ -302,7 +317,6 @@
                             <td style="text-align:center;color:#94a3b8">{{ $item->urutan }}</td>
                             <td class="td-actions">
                                 <button class="btn-edit" onclick="openEditDusunModal({{ $item->id }},'{{ addslashes($item->nama) }}',{{ $item->kk }},{{ $item->laki }},{{ $item->perempuan }},{{ $item->urutan }})">Edit</button>
-                                <button class="btn-del" onclick="openDeleteDusunModal({{ $item->id }},'{{ addslashes($item->nama) }}')">Hapus</button>
                             </td>
                         </tr>
                         @empty
@@ -345,6 +359,7 @@
                 <div class="form-group">
                     <label class="form-label">Kategori <span class="req">*</span></label>
                     <select name="kategori" id="add-kategori" class="form-select" required>
+                        <option value="tahun_penduduk">Per Tahun</option>
                         <option value="usia">Usia</option><option value="pendidikan">Pendidikan</option>
                         <option value="pekerjaan">Pekerjaan</option><option value="agama">Agama</option>
                         <option value="perkawinan">Perkawinan</option><option value="pemilih">Pemilih</option>
@@ -527,6 +542,7 @@ function toggleNav(id) {
     document.getElementById(id).classList.toggle('open');
     document.getElementById(id+'-icon').classList.toggle('open');
 }
+const readOnlyTabs = ['agama', 'perkawinan', 'dusun'];
 function switchKategori(k, btn) {
     activeKategori = k;
     document.querySelectorAll('[id^="panel-"]').forEach(p => p.style.display = 'none');
@@ -535,6 +551,10 @@ function switchKategori(k, btn) {
     btn.classList.add('active');
     if (document.getElementById('add-kategori')) {
         document.getElementById('add-kategori').value = k;
+    }
+    const btnTambah = document.getElementById('btn-tambah-data');
+    if (btnTambah) {
+        btnTambah.style.display = readOnlyTabs.includes(k) ? 'none' : '';
     }
 }
 function openModal(id){document.getElementById(id).classList.add('open')}

@@ -3,12 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kelola Beranda - Admin Desa Bade</title>
+    <title>Sambutan Kepala Desa - Admin Desa Bade</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <style>h1, h2, h3, h4, h5, h6 { font-family: 'Cinzel', serif; } 
+    <style>
+        h1, h2, h3, h4, h5, h6 { font-family: 'Cinzel', serif; } 
         * { box-sizing: border-box; }
         body { font-family: 'Plus Jakarta Sans', sans-serif; background: #f4f6fb; color: #1e293b; margin: 0; padding: 0; }
         ::-webkit-scrollbar { width: 5px; }
@@ -63,270 +64,38 @@
         .topbar { height: 70px; min-height: 70px; background: #fff; border-bottom: 1px solid #e2e8f0; padding: 0 32px; display: flex; align-items: center; justify-content: space-between; }
         .topbar-left h2 { font-size: 18px; font-weight: 700; color: #1e293b; margin: 0; }
         .topbar-left p { font-size: 12px; color: #64748b; margin: 4px 0 0; }
-        .breadcrumb { display: flex; align-items: center; gap: 6px; font-size: 12px; color: #94a3b8; }
-        .breadcrumb a { color: #64748b; text-decoration: none; font-weight: 500; }
-        .breadcrumb a:hover { color: #2e7d32; }
         .page-content { flex: 1; padding: 32px; overflow-y: auto; }
 
-        /* CARDS & GRIDS */
+        /* CARDS */
         .card { background: #fff; border-radius: 16px; border: 1px solid #e2e8f0; padding: 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.02); }
         .card-title { font-size: 15px; font-weight: 700; color: #1e293b; margin: 0 0 4px; }
-        .card-subtitle { font-size: 12px; color: #64748b; margin: 0 0 20px; line-height: 1.6; }
-
-        /* SLIDE CARDS */
-        .card-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
-            gap: 24px;
-            margin-top: 24px;
-        }
-
-        .slide-card {
-            background: #ffffff;
-            border-radius: 18px;
-            border: 1px solid #e2e8f0;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            position: relative;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02), 0 2px 4px -1px rgba(0, 0, 0, 0.01);
-        }
-
-        .slide-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 20px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.02);
-            border-color: #2e7d32;
-        }
-
-        .slide-badge {
-            position: absolute;
-            top: 12px;
-            left: 12px;
-            z-index: 10;
-            padding: 4px 10px;
-            border-radius: 9999px;
-            font-size: 10px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            background: rgba(15, 23, 42, 0.6);
-            color: #ffffff;
-            backdrop-filter: blur(4px);
-        }
-
-        .btn-delete-absolute {
-            position: absolute;
-            top: 12px;
-            right: 12px;
-            z-index: 10;
-            height: 32px;
-            width: 32px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            background: #ef4444;
-            color: #ffffff;
-            border: none;
-            cursor: pointer;
-            box-shadow: 0 4px 6px rgba(239, 68, 68, 0.2);
-            transition: all 0.2s;
-        }
-
-        .btn-delete-absolute:hover {
-            background: #dc2626;
-            transform: scale(1.08);
-        }
-
-        .image-container {
-            position: relative;
-            width: 100%;
-            padding-top: 56.25%; /* 16:9 Aspect Ratio */
-            background: #f8fafc;
-            border-bottom: 1px solid #f1f5f9;
-            overflow: hidden;
-        }
-
-        .image-container img {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.5s ease;
-        }
-
-        .slide-card:hover .image-container img {
-            transform: scale(1.04);
-        }
-
-        .upload-overlay {
-            position: absolute;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.4);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            transition: opacity 0.25s ease;
-            cursor: pointer;
-            color: #ffffff;
-        }
-
-        .image-container:hover .upload-overlay {
-            opacity: 1;
-        }
-
-        .card-body {
-            padding: 18px;
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-
-        .status-section {
-            margin-bottom: 16px;
-        }
-
-        .status-title {
-            font-size: 11px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            color: #94a3b8;
-        }
-
-        .status-badge-inline {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 13px;
-            font-weight: 600;
-            margin-top: 4px;
-        }
-
-        .status-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-        }
-
-        .status-custom { color: #16a34a; }
-        .status-custom .status-dot { background: #22c55e; }
-
-        .status-default { color: #d97706; }
-        .status-default .status-dot { background: #f59e0b; }
-
-        .status-empty { color: #94a3b8; }
-        .status-empty .status-dot { background: #cbd5e1; }
-
-        .btn-select-full {
-            width: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            padding: 10px 16px;
-            background: #ffffff;
-            border: 1px solid #cbd5e1;
-            border-radius: 12px;
-            font-size: 13px;
-            font-weight: 600;
-            color: #475569;
-            cursor: pointer;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
-            transition: all 0.2s;
-        }
-
-        .btn-select-full:hover {
-            background: #f8fafc;
-            border-color: #2e7d32;
-            color: #2e7d32;
-        }
-
+        
+        .btn-save { background: linear-gradient(135deg, #2e7d32, #1b5e20); color: white; border: none; padding: 10px 20px; border-radius: 10px; font-size: 13px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; transition: all 0.2s; box-shadow: 0 4px 12px rgba(46,125,50,0.25); }
+        .btn-save:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(46,125,50,0.35); }
+        .btn-select-full { background: #ffffff; border: 1px solid #d1d5db; color: #1f2937; padding: 9px 16px; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+        .btn-select-full:hover { background: #f9fafb; border-color: #9ca3af; }
         .logo-file-input { display: none; }
-
-        /* STATS HEADER */
-        .stats-header-card {
-            display: flex;
-            align-items: center;
-            gap: 24px;
-            background: linear-gradient(135deg, #2e7d32 0%, #1f5a26 100%);
-            color: #ffffff;
-            padding: 20px 28px;
-            border-radius: 18px;
-            margin-bottom: 28px;
-            box-shadow: 0 8px 24px rgba(46,125,50,0.18);
-        }
-
-        .stats-item {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .stats-label {
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            opacity: 0.8;
-            font-weight: 600;
-        }
-
-        .stats-value {
-            font-size: 20px;
-            font-weight: 700;
-            margin-top: 2px;
-        }
-
-        .stats-divider {
-            width: 1px;
-            height: 36px;
-            background: rgba(255, 255, 255, 0.25);
-        }
-
-        /* BUTTONS */
-        .form-actions { display: flex; justify-content: flex-end; margin-top: 28px; }
-        .btn-save { padding: 12px 28px; border-radius: 12px; background: linear-gradient(135deg, #2e7d32, #1b5e20); color: #fff; font-size: 14px; font-weight: 600; border: none; cursor: pointer; transition: all 0.2s; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 12px rgba(46,125,50,0.2); }
-        .btn-save:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(46,125,50,0.3); }
-
-        /* ALERTS */
-        .alert-success { display: flex; align-items: center; gap: 12px; padding: 14px 20px; background: #10b981; color: #fff; border-radius: 12px; font-size: 13.5px; font-weight: 500; margin-bottom: 24px; }
-        .alert-success-icon { display: flex; align-items: center; justify-content: center; width: 22px; height: 22px; background: rgba(255,255,255,0.2); border-radius: 50%; }
-        .alert-error { display: flex; gap: 12px; padding: 14px 20px; background: #fef2f2; border: 1px solid #fecaca; color: #991b1b; border-radius: 12px; font-size: 13.5px; margin-bottom: 24px; }
+        
+        .alert-success { background: #ecfdf5; border: 1px solid #a7f3d0; border-radius: 12px; padding: 14px 18px; margin-bottom: 24px; display: flex; align-items: center; gap: 12px; color: #065f46; font-size: 14px; font-weight: 600; }
+        .alert-success-icon { width: 24px; height: 24px; background: #10b981; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .alert-error { background: #fef2f2; border: 1px solid #fecaca; border-radius: 12px; padding: 14px 18px; margin-bottom: 24px; display: flex; align-items: flex-start; gap: 12px; color: #991b1b; }
     </style>
 </head>
 <body>
 
-@php
-    $activeCount = 0;
-    for ($i = 1; $i <= 5; $i++) {
-        if (!empty($settings['hero_image_' . $i])) {
-            $activeCount++;
-        }
-    }
-@endphp
-
 <div class="layout">
-
     <!-- SIDEBAR -->
     <aside class="sidebar">
         <div class="sidebar-brand">
             <div class="brand-logo">
                 <div class="brand-icon">
-                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
                 </div>
-                <div class="brand-text">
-                    <h1>Desa Bade</h1>
-                    <p>Panel Admin</p>
-                </div>
+                <div class="brand-text"><h1>Desa Bade</h1><p>Admin Panel</p></div>
             </div>
         </div>
-
         <nav class="sidebar-nav">
+            <div class="nav-section-label">Menu Utama</div>
             <a href="{{ route('admin.dashboard') }}" class="nav-item">
                 <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2H6a2 2 0 01-2-2v-4zM14 16a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2h-2a2 2 0 01-2-2v-4z"/></svg>
                 <span>Dashboard</span>
@@ -343,8 +112,8 @@
                     <svg id="beranda-menu-icon" class="nav-group-chevron open" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                 </div>
                 <div id="beranda-menu" class="nav-submenu open">
-                    <a href="{{ route('admin.beranda') }}" class="nav-subitem active-sub">Slide Hero Banner</a>
-                    <a href="{{ route('admin.beranda.sambutan') }}" class="nav-subitem">Sambutan Kepala Desa</a>
+                    <a href="{{ route('admin.beranda') }}" class="nav-subitem">Slide Hero Banner</a>
+                    <a href="{{ route('admin.beranda.sambutan') }}" class="nav-subitem active-sub">Sambutan Kepala Desa</a>
                     <a href="{{ route('admin.perangkat-desa') }}" class="nav-subitem">Foto Perangkat Desa</a>
                 </div>
             </div>
@@ -382,10 +151,10 @@
                 </div>
             </div>
 
-        <a href="{{ route('admin.layanan') }}" class="nav-item">
-            <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/></svg>
-            <span>Kelola Layanan</span>
-        </a>
+            <a href="{{ route('admin.layanan') }}" class="nav-item">
+                <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/></svg>
+                <span>Kelola Layanan</span>
+            </a>
             <a href="{{ route('admin.berita') }}" class="nav-item">
                 <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6m-6 4h6"/></svg>
                 <span>Berita Desa</span>
@@ -432,20 +201,20 @@
 
     <!-- MAIN -->
     <div class="main">
-        <form method="POST" action="{{ route('admin.beranda.update') }}" enctype="multipart/form-data">
+        <form method="POST" action="{{ route('admin.beranda.sambutan.update') }}" enctype="multipart/form-data">
             @csrf
             @method('PUT')
 
             <!-- Topbar -->
             <header class="topbar">
                 <div class="topbar-left">
-                    <h2>Slide Hero Banner</h2>
-                    <p>Kelola slideshow banner hero halaman utama website Desa Bade</p>
+                    <h2>Sambutan Kepala Desa</h2>
+                    <p>Kelola nama, jabatan, foto utama, dan teks sambutan Kepala Desa Bade</p>
                 </div>
                 <div class="topbar-right" style="display: flex; align-items: center; gap: 20px;">
                     <button type="submit" class="btn-save" style="margin: 0; padding: 10px 20px; font-size: 13px;">
                         <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="margin-right: 4px;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
-                        Simpan Slide Hero
+                        Simpan Sambutan
                     </button>
                 </div>
             </header>
@@ -482,110 +251,82 @@
                     <svg width="20" height="20" fill="none" stroke="#d97706" viewBox="0 0 24 24" style="flex-shrink:0;">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
                     </svg>
-                    <p style="margin:0; font-size:13.5px; font-weight:600;">Ada perubahan yang belum disimpan! Jangan lupa klik tombol <strong>"Simpan Slide Hero"</strong> di pojok kanan atas.</p>
+                    <p style="margin:0; font-size:13.5px; font-weight:600;">Ada perubahan yang belum disimpan! Jangan lupa klik tombol <strong>"Simpan Sambutan"</strong> di pojok kanan atas.</p>
                 </div>
 
+                <!-- CARD: KELOLA SAMBUTAN & FOTO KEPALA DESA -->
                 <div class="card">
-                    <p class="card-title">Kelola Slide Hero Beranda</p>
+                    <p class="card-title" style="margin-bottom: 20px;">Kelola Sambutan & Foto Utama Kepala Desa</p>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-bottom: 24px;">
+                        <div>
+                            <label style="display: block; font-size: 13px; font-weight: 700; color: #374151; margin-bottom: 6px;">Nama Kepala Desa</label>
+                            <input type="text" name="nama_kades" value="{{ $settings['nama_kades'] ?? 'HARYONO' }}" style="width: 100%; padding: 10px 14px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 14px;" onchange="showUnsavedAlert()">
+                        </div>
+                        <div>
+                            <label style="display: block; font-size: 13px; font-weight: 700; color: #374151; margin-bottom: 6px;">Jabatan Kepala Desa</label>
+                            <input type="text" name="jabatan_kades" value="{{ $settings['jabatan_kades'] ?? 'Kepala Desa Bade' }}" style="width: 100%; padding: 10px 14px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 14px;" onchange="showUnsavedAlert()">
+                        </div>
+                    </div>
 
-                    <!-- GRID CARD CAROUSEL -->
-                    <div class="card-grid">
-                        @for ($i = 1; $i <= 5; $i++)
-                            @php
-                                $val = $settings['hero_image_' . $i] ?? '';
-                                $hasImage = (!empty($val) && $val !== 'none');
-                                $isDeleted = ($val === 'none');
-                                
-                                // Determine image preview source URL
-                                if ($hasImage) {
-                                    $imgSrc = asset($val);
-                                } else if ($i == 1 && !$isDeleted) {
-                                    $imgSrc = asset('hero-foto-utama.jpg');
-                                } else if ($i == 2 && !$isDeleted) {
-                                    $imgSrc = asset('hero-foto-perahu.png');
-                                } else {
-                                    $imgSrc = 'https://placehold.co/600x400/e2e8f0/64748b?text=Kosong';
-                                }
-
-                                // Delete button is visible if there is an image to delete:
-                                // - For Slide 1 and 2: visible if not explicitly disabled ('none')
-                                // - For Slide 3, 4, 5: visible only if custom image is set
-                                $showDelete = false;
-                                if ($i <= 2) {
-                                    $showDelete = !$isDeleted;
-                                } else {
-                                    $showDelete = $hasImage;
-                                }
-                            @endphp
-                            <div class="slide-card">
-                                <!-- Badge Slide Number -->
-                                <div class="slide-badge">Slide {{ $i }}</div>
-
-                                <!-- Aspect Ratio Image Preview -->
-                                <div class="image-container" onclick="document.getElementById('hero_image_{{ $i }}').click()">
-                                    <img id="hero-{{ $i }}-preview" 
-                                         src="{{ $imgSrc }}" 
-                                         alt="Slide {{ $i }}"
-                                         @if(!$hasImage && ($i > 2 || $isDeleted)) style="opacity: 0.55;" @endif>
-                                    
-                                    <!-- Hover upload overlay -->
-                                    <div class="upload-overlay">
-                                        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5"/></svg>
-                                        <span style="font-size: 11px; font-weight: 700; margin-top: 6px; text-transform: uppercase; letter-spacing: 0.5px;">Unggah Foto</span>
-                                    </div>
-                                </div>
-
-                                <!-- Button Delete Absolute (Top Right) -->
-                                <button type="button" id="btn-delete-{{ $i }}" class="btn-delete-absolute" 
-                                        style="display: {{ $showDelete ? 'flex' : 'none' }};" 
-                                        title="Hapus gambar slide ini"
-                                        onclick="event.stopPropagation(); deleteHero({{ $i }}, 'hero-{{ $i }}-preview', 'btn-delete-{{ $i }}', 'delete_hero_image_{{ $i }}', 'status-text-{{ $i }}')">
-                                    <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
-                                </button>
-
-                                <!-- Card Footer Body -->
-                                <div class="card-body">
-                                    <div class="status-section">
-                                        <span class="status-title">Status Slot</span>
-                                        <div id="status-text-{{ $i }}">
-                                            @if($hasImage)
-                                                <span class="status-badge-inline status-custom">
-                                                    <span class="status-dot"></span> Foto Kustom
-                                                </span>
-                                            @elseif($i <= 2 && !$isDeleted)
-                                                <span class="status-badge-inline status-default">
-                                                    <span class="status-dot"></span> Gambar Bawaan
-                                                </span>
-                                            @else
-                                                <span class="status-badge-inline status-empty">
-                                                    <span class="status-dot"></span> Kosong
-                                                </span>
-                                            @endif
-                                        </div>
-                                    </div>
-
-                                    <div class="action-section">
-                                        <input type="hidden" name="delete_hero_image_{{ $i }}" id="delete_hero_image_{{ $i }}" value="0">
-                                        <input type="file" id="hero_image_{{ $i }}" name="hero_image_{{ $i }}" class="logo-file-input" accept="image/*" onchange="previewHero(this, 'hero-{{ $i }}-preview', 'btn-delete-{{ $i }}', 'delete_hero_image_{{ $i }}', 'status-text-{{ $i }}', {{ $i }})">
-                                        
-                                        <button type="button" class="btn-select-full" onclick="document.getElementById('hero_image_{{ $i }}').click()">
-                                            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
-                                            Pilih Berkas Foto
-                                        </button>
-                                    </div>
-                                </div>
+                    <div style="margin-bottom: 24px;">
+                        <label style="display: block; font-size: 13px; font-weight: 700; color: #374151; margin-bottom: 6px;">Foto Utama Kepala Desa</label>
+                        <div style="display: flex; align-items: center; gap: 20px; flex-wrap: wrap;">
+                            <div style="width: 100px; height: 130px; border-radius: 14px; overflow: hidden; border: 2px solid #2e7d32; background: #f3f4f6; flex-shrink: 0; box-shadow: 0 4px 10px rgba(0,0,0,0.08);">
+                                @php
+                                    $fotoKadesVal = $settings['foto_kades'] ?? '';
+                                    $kadesSrc = !empty($fotoKadesVal) ? asset($fotoKadesVal) : asset('images/kepala-desa.jpg');
+                                @endphp
+                                <img id="kades-preview" src="{{ $kadesSrc }}" style="width: 100%; height: 100%; object-fit: cover; object-position: center 10%;">
                             </div>
-                        @endfor
+                            <div>
+                                <input type="file" name="foto_kades" id="foto_kades" class="logo-file-input" accept="image/*" onchange="previewSingleImage(this, 'kades-preview')">
+                                <button type="button" class="btn-select-full" onclick="document.getElementById('foto_kades').click()" style="width: auto; padding: 10px 18px; font-weight: 700;">
+                                    Unggah / Ganti Foto Kepala Desa
+                                </button>
+                                <p style="font-size: 12px; color: #6b7280; margin-top: 8px;">Format gambar JPG, PNG, WEBP max 10MB.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px;">
+                        <div>
+                            <label style="display: block; font-size: 13px; font-weight: 700; color: #374151; margin-bottom: 6px;">Warna Judul Sambutan</label>
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <input type="color" id="picker_warna_judul" value="{{ $settings['warna_judul_sambutan'] ?? '#f3e4b2' }}" style="width: 44px; height: 40px; padding: 2px; border: 1px solid #d1d5db; border-radius: 8px; cursor: pointer; background: #fff;" oninput="document.getElementById('input_warna_judul').value = this.value; showUnsavedAlert();">
+                                <input type="text" name="warna_judul_sambutan" id="input_warna_judul" value="{{ $settings['warna_judul_sambutan'] ?? '#f3e4b2' }}" style="flex: 1; padding: 9px 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 14px; font-weight: 600;" oninput="document.getElementById('picker_warna_judul').value = this.value; showUnsavedAlert();">
+                            </div>
+                            <p style="font-size: 11px; color: #6b7280; margin-top: 4px;">Pilih warna judul besar sambutan (cth: #f3e4b2 emas / #ffffff putih / #86efac hijau muda).</p>
+                        </div>
+                        <div>
+                            <label style="display: block; font-size: 13px; font-weight: 700; color: #374151; margin-bottom: 6px;">Warna Isi Teks Sambutan</label>
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <input type="color" id="picker_warna_isi" value="{{ $settings['warna_isi_sambutan'] ?? '#f0fdf4' }}" style="width: 44px; height: 40px; padding: 2px; border: 1px solid #d1d5db; border-radius: 8px; cursor: pointer; background: #fff;" oninput="document.getElementById('input_warna_isi').value = this.value; showUnsavedAlert();">
+                                <input type="text" name="warna_isi_sambutan" id="input_warna_isi" value="{{ $settings['warna_isi_sambutan'] ?? '#f0fdf4' }}" style="flex: 1; padding: 9px 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 14px; font-weight: 600;" oninput="document.getElementById('picker_warna_isi').value = this.value; showUnsavedAlert();">
+                            </div>
+                            <p style="font-size: 11px; color: #6b7280; margin-top: 4px;">Pilih warna isi paragraf sambutan (cth: #f0fdf4 putih kehijauan / #ffffff putih bersih).</p>
+                        </div>
+                    </div>
+
+                    <div style="margin-bottom: 20px;">
+                        <label style="display: block; font-size: 13px; font-weight: 700; color: #374151; margin-bottom: 6px;">Judul / Salam Sambutan (Teks Ukuran Besar)</label>
+                        <textarea name="judul_sambutan" rows="3" placeholder="cth: Assalamu'alaikum Warahmatullahi Wabarakatuh, Salam sejahtera bagi kita semua." style="width: 100%; padding: 14px; border: 1px solid #d1d5db; border-radius: 10px; font-size: 15px; font-weight: 600; line-height: 1.5; color: #1e293b;" onchange="showUnsavedAlert()">{{ $settings['judul_sambutan'] ?? '' }}</textarea>
+                        <p style="font-size: 12px; color: #6b7280; margin-top: 4px;">Teks ini akan ditampilkan paling menonjol (huruf besar) di bagian awal sambutan pada halaman website.</p>
+                    </div>
+
+                    <div>
+                        <label style="display: block; font-size: 13px; font-weight: 700; color: #374151; margin-bottom: 6px;">Isi Teks Sambutan (Paragraf Utama)</label>
+                        <textarea name="sambutan_kades" rows="8" placeholder="Tuliskan isi paragraf sambutan di sini..." style="width: 100%; padding: 14px; border: 1px solid #d1d5db; border-radius: 10px; font-size: 14px; line-height: 1.6;" onchange="showUnsavedAlert()">{{ $settings['sambutan_kades'] ?? '' }}</textarea>
+                        <p style="font-size: 12px; color: #6b7280; margin-top: 4px;">Tuliskan isi sambutan. Anda dapat membuat beberapa paragraf dengan menekan tombol enter.</p>
                     </div>
                 </div>
 
-        </main>
+            </main>
         </form>
     </div>
 </div>
 
 <script>
-    // Toggle Nav sidebar group
     function toggleNav(id, header) {
         const submenu = document.getElementById(id);
         const icon = document.getElementById(id + '-icon');
@@ -598,55 +339,6 @@
         if (alertBox) {
             alertBox.style.display = 'flex';
         }
-    }
-
-    // Image upload preview
-    function previewHero(input, targetId, deleteBtnId, hiddenInputId, statusId, index) {
-        if (input.files && input.files[0]) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const img = document.getElementById(targetId);
-                img.src = e.target.result;
-                img.style.opacity = '1';
-                
-                // Show delete button
-                document.getElementById(deleteBtnId).style.display = 'flex';
-                
-                // Reset hidden delete status
-                document.getElementById(hiddenInputId).value = '0';
-                
-                // Update status badge to Custom
-                document.getElementById(statusId).innerHTML = `
-                    <span class="status-badge-inline status-custom">
-                        <span class="status-dot"></span> Pilihan Baru (Belum Disimpan)
-                    </span>
-                `;
-                
-                showUnsavedAlert();
-            }
-            reader.readAsDataURL(input.files[0]);
-        }
-    }
-
-    // Reset slide slot
-    function deleteHero(index, previewId, deleteBtnId, hiddenInputId, statusId) {
-        const fileInput = document.getElementById('hero_image_' + index);
-        fileInput.value = '';
-        
-        const previewImg = document.getElementById(previewId);
-        previewImg.src = "https://placehold.co/600x400/e2e8f0/64748b?text=Kosong";
-        previewImg.style.opacity = '0.55';
-        
-        document.getElementById(statusId).innerHTML = `
-            <span class="status-badge-inline status-empty">
-                <span class="status-dot"></span> Kosong (Belum Disimpan)
-            </span>
-        `;
-        
-        document.getElementById(deleteBtnId).style.display = 'none';
-        document.getElementById(hiddenInputId).value = '1';
-        
-        showUnsavedAlert();
     }
 
     function previewSingleImage(input, targetId) {

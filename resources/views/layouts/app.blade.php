@@ -176,7 +176,76 @@
                     </ul>
                 </div>
 
+                {{-- Kolom 5: Kritik & Saran --}}
+                <div class="footer-col footer-col-kritik">
+                    <h3 class="footer-col-title">Aspirasi</h3>
+                    <p class="footer-kritik-desc">Sampaikan kritik atau saran Anda untuk kemajuan desa.</p>
+                    <button class="kritik-saran-fab" onclick="openKritikModal()" title="Kritik &amp; Saran" aria-label="Buka kotak kritik dan saran">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="18" height="18">
+                            <rect x="2" y="4" width="20" height="16" rx="3"/>
+                            <path d="M22 7l-10 7L2 7"/>
+                        </svg>
+                        <span class="kritik-fab-label">Kritik &amp; Saran</span>
+                    </button>
+                </div>
+
             </div>
+
+{{-- Modal Kritik & Saran --}}
+<div id="modal-kritik" class="kritik-modal-backdrop" onclick="closeKritikModal(event)">
+    <div class="kritik-modal">
+        <div class="kritik-modal-header">
+            <div class="kritik-modal-title">
+                <div class="kritik-modal-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+                        <rect x="2" y="4" width="20" height="16" rx="3"/><path d="M22 7l-10 7L2 7"/>
+                    </svg>
+                </div>
+                Kritik &amp; Saran
+            </div>
+            <button class="kritik-modal-close" onclick="closeKritikModal()" aria-label="Tutup">&times;</button>
+        </div>
+        <div class="kritik-modal-body">
+            <p class="kritik-modal-desc">Sampaikan kritik, saran, atau aspirasi Anda untuk Desa Bade. Kami akan membaca setiap pesan.</p>
+            @if(session('kritik_success'))
+            <div class="kritik-success-alert">
+                <svg width="18" height="18" fill="none" stroke="#22c55e" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                <span>{{ session('kritik_success') }}</span>
+            </div>
+            @endif
+            <form method="POST" action="{{ route('pesan.store') }}">
+                @csrf
+                <div class="kritik-form-group">
+                    <label class="kritik-label">Nama <span class="kritik-required">*</span></label>
+                    <input type="text" name="nama" class="kritik-input {{ $errors->has('nama') ? 'kritik-input-error' : '' }}" placeholder="Nama Anda" value="{{ old('nama') }}" required maxlength="100">
+                    @error('nama')<span class="kritik-error">{{ $message }}</span>@enderror
+                </div>
+                <div class="kritik-form-group">
+                    <label class="kritik-label">Email <span class="kritik-optional">(opsional)</span></label>
+                    <input type="email" name="email" class="kritik-input {{ $errors->has('email') ? 'kritik-input-error' : '' }}" placeholder="email@contoh.com" value="{{ old('email') }}" maxlength="150">
+                    @error('email')<span class="kritik-error">{{ $message }}</span>@enderror
+                </div>
+                <div class="kritik-form-group">
+                    <label class="kritik-label">Subjek <span class="kritik-required">*</span></label>
+                    <input type="text" name="subjek" class="kritik-input {{ $errors->has('subjek') ? 'kritik-input-error' : '' }}" placeholder="Ringkasan pesan Anda" value="{{ old('subjek') }}" required maxlength="200">
+                    @error('subjek')<span class="kritik-error">{{ $message }}</span>@enderror
+                </div>
+                <div class="kritik-form-group">
+                    <label class="kritik-label">Pesan <span class="kritik-required">*</span></label>
+                    <textarea name="pesan" class="kritik-input kritik-textarea {{ $errors->has('pesan') ? 'kritik-input-error' : '' }}" placeholder="Tuliskan kritik atau saran Anda..." required maxlength="2000" rows="4">{{ old('pesan') }}</textarea>
+                    @error('pesan')<span class="kritik-error">{{ $message }}</span>@enderror
+                </div>
+                <div class="kritik-form-actions">
+                    <button type="button" onclick="closeKritikModal()" class="kritik-btn-cancel">Batal</button>
+                    <button type="submit" class="kritik-btn-submit">
+                        <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M22 2L11 13"/><path stroke-linecap="round" stroke-linejoin="round" d="M22 2L15 22 11 13 2 9l20-7z"/></svg>
+                        Kirim Pesan
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
             {{-- Copyright bar --}}
             <div class="footer-bar">
@@ -187,6 +256,69 @@
                 </div>
             </div>
         </footer>
+
+<style>
+/* === Kritik & Saran Footer Column === */
+.footer-col-kritik{display:flex;flex-direction:column;gap:0;}
+.footer-kritik-desc{font-size:12.5px;color:rgba(255,255,255,0.55);line-height:1.6;margin:0 0 14px;}
+.kritik-saran-fab{display:inline-flex;align-items:center;gap:9px;padding:10px 18px;background:rgba(255,255,255,0.13);backdrop-filter:blur(8px);border:1.5px solid rgba(255,255,255,0.25);border-radius:50px;color:#fff;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;transition:all .25s;letter-spacing:.2px;white-space:nowrap;width:fit-content;}
+.kritik-saran-fab:hover{background:rgba(255,255,255,0.22);transform:translateY(-2px);box-shadow:0 8px 20px rgba(0,0,0,.25);border-color:rgba(255,255,255,0.4);}
+.kritik-fab-label{white-space:nowrap;}
+
+/* === Modal Backdrop === */
+.kritik-modal-backdrop{position:fixed;inset:0;background:rgba(15,23,42,.6);backdrop-filter:blur(6px);z-index:9999;display:none;align-items:center;justify-content:center;padding:20px;}
+.kritik-modal-backdrop.open{display:flex;}
+
+/* === Modal Container === */
+.kritik-modal{background:#fff;border-radius:20px;width:100%;max-width:480px;max-height:90vh;overflow-y:auto;box-shadow:0 24px 80px rgba(0,0,0,.22),0 0 0 1px rgba(0,0,0,.04);animation:kritikSlide .28s cubic-bezier(.34,1.56,.64,1);}
+@keyframes kritikSlide{from{transform:translateY(24px) scale(.96);opacity:0}to{transform:translateY(0) scale(1);opacity:1}}
+
+/* === Modal Header === */
+.kritik-modal-header{display:flex;align-items:center;justify-content:space-between;padding:20px 24px;border-bottom:1px solid #f1f5f9;}
+.kritik-modal-title{display:flex;align-items:center;gap:12px;font-size:17px;font-weight:700;color:#1e293b;letter-spacing:-.2px;}
+.kritik-modal-icon{width:38px;height:38px;border-radius:10px;background:linear-gradient(135deg,#e8f5e9,#c8e6c9);display:flex;align-items:center;justify-content:center;color:#2e7d32;flex-shrink:0;}
+.kritik-modal-close{width:34px;height:34px;border-radius:9px;border:1.5px solid #e2e8f0;background:#f8fafc;color:#94a3b8;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:20px;transition:all .18s;font-family:inherit;line-height:1;flex-shrink:0;}
+.kritik-modal-close:hover{background:#fee2e2;color:#ef4444;border-color:#fecaca;transform:scale(1.05);}
+
+/* === Modal Body === */
+.kritik-modal-body{padding:20px 24px 24px;}
+.kritik-modal-desc{font-size:13px;color:#64748b;margin:0 0 20px;line-height:1.6;}
+
+/* === Success Alert === */
+.kritik-success-alert{background:#f0fdf4;border:1px solid #86efac;border-radius:10px;padding:12px 16px;margin-bottom:18px;display:flex;gap:10px;align-items:center;font-size:13px;font-weight:600;color:#15803d;}
+
+/* === Form Elements === */
+.kritik-form-group{margin-bottom:16px;}
+.kritik-label{display:flex;align-items:center;gap:5px;font-size:12.5px;font-weight:600;color:#374151;margin-bottom:6px;letter-spacing:.1px;}
+.kritik-required{color:#ef4444;font-size:13px;line-height:1;}
+.kritik-optional{color:#94a3b8;font-size:11px;font-weight:400;}
+.kritik-input{width:100%;padding:10px 14px;border:1.5px solid #e2e8f0;border-radius:10px;font-size:13.5px;font-family:inherit;color:#1e293b;background:#fafafa;transition:all .2s;box-sizing:border-box;outline:none;}
+.kritik-input::placeholder{color:#94a3b8;}
+.kritik-input:focus{border-color:#2e7d32;background:#fff;box-shadow:0 0 0 3.5px rgba(46,125,50,.1);}
+.kritik-textarea{resize:vertical;min-height:110px;line-height:1.6;}
+.kritik-input-error{border-color:#ef4444!important;background:#fff8f8;}
+.kritik-input-error:focus{box-shadow:0 0 0 3.5px rgba(239,68,68,.1)!important;}
+.kritik-error{font-size:11.5px;color:#ef4444;margin-top:4px;display:block;}
+
+/* === Action Buttons === */
+.kritik-form-actions{display:flex;justify-content:flex-end;align-items:center;gap:10px;margin-top:8px;padding-top:16px;border-top:1px solid #f1f5f9;}
+.kritik-btn-submit{display:inline-flex;align-items:center;gap:8px;padding:10px 22px;background:linear-gradient(135deg,#2e7d32,#1b5e20);color:#fff;border-radius:10px;font-size:13.5px;font-weight:600;border:none;cursor:pointer;font-family:inherit;transition:all .2s;letter-spacing:.1px;}
+.kritik-btn-submit:hover{transform:translateY(-1px);box-shadow:0 6px 16px rgba(46,125,50,.4);}
+.kritik-btn-submit:active{transform:translateY(0);}
+.kritik-btn-cancel{padding:10px 18px;background:#fff;color:#64748b;border-radius:10px;font-size:13.5px;font-weight:600;border:1.5px solid #e2e8f0;cursor:pointer;font-family:inherit;transition:all .18s;}
+.kritik-btn-cancel:hover{background:#f8fafc;border-color:#cbd5e1;color:#475569;}
+</style>
+<script>
+function openKritikModal(){document.getElementById('modal-kritik').classList.add('open');document.body.style.overflow='hidden';}
+function closeKritikModal(e){if(e&&e.target!==document.getElementById('modal-kritik'))return;document.getElementById('modal-kritik').classList.remove('open');document.body.style.overflow='';}
+document.addEventListener('keydown',function(e){if(e.key==='Escape'){document.getElementById('modal-kritik').classList.remove('open');document.body.style.overflow='';}}); 
+@if($errors->any() && old('pesan'))
+document.addEventListener('DOMContentLoaded',function(){openKritikModal();});
+@endif
+@if(session('kritik_success'))
+document.addEventListener('DOMContentLoaded',function(){openKritikModal();});
+@endif
+</script>
 
     </div>
 </body>
