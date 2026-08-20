@@ -7,10 +7,11 @@ use Illuminate\Http\Request;
 class PesanController extends Controller {
     public function store(Request $request) {
         $validated = $request->validate([
-            'nama'   => 'required|string|max:100',
-            'email'  => 'nullable|email|max:150',
-            'subjek' => 'required|string|max:200',
-            'pesan'  => 'required|string|max:2000',
+            'nama'    => 'required|string|max:100',
+            'email'   => 'nullable|email|max:150',
+            'telepon' => 'nullable|string|max:30',
+            'subjek'  => 'required|string|max:200',
+            'pesan'   => 'required|string|max:2000',
         ], [
             'nama.required'   => 'Nama wajib diisi.',
             'subjek.required' => 'Subjek wajib diisi.',

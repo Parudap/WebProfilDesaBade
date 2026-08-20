@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -317,11 +317,12 @@
                             <td>
                                 <div class="sender-name">{{ $item->nama }}</div>
                                 <div class="sender-email">{{ $item->email ?? '-' }}</div>
+                                @if($item->telepon)<div class="sender-email" style="color:#16a34a;font-weight:500;">{{ $item->telepon }}</div>@endif
                             </td>
                             <td>
                                 <div class="msg-subject">{{ $item->subjek }}</div>
                                 <div class="msg-preview">{{ Str::limit($item->pesan, 80) }}</div>
-                                <button type="button" class="btn-outline" style="padding:4px 10px;font-size:11px;" onclick="openMsgModal({{ $item->id }}, '{{ addslashes($item->nama) }}', '{{ addslashes($item->email ?? '') }}', '{{ addslashes($item->subjek) }}', '{{ addslashes($item->pesan) }}', '{{ $item->created_at->translatedFormat('d M Y, H:i') }}')">
+                                <button type="button" class="btn-outline" style="padding:4px 10px;font-size:11px;" onclick="openMsgModal({{ $item->id }}, '{{ addslashes($item->nama) }}', '{{ addslashes($item->email ?? '') }}', '{{ addslashes($item->telepon ?? '') }}', '{{ addslashes($item->subjek) }}', '{{ addslashes($item->pesan) }}', '{{ $item->created_at->translatedFormat('d M Y, H:i') }}')">
                                     <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
                                     Baca Selengkapnya
                                 </button>
@@ -393,6 +394,7 @@
                     <div class="msg-detail-info">
                         <p class="msg-detail-name" id="msg-name"></p>
                         <p class="msg-detail-email" id="msg-email"></p>
+                        <p class="msg-detail-email" id="msg-phone" style="color:#16a34a;font-weight:500;"></p>
                         <p class="msg-detail-date" id="msg-date"></p>
                     </div>
                 </div>
@@ -435,10 +437,11 @@ function closeModal(id){document.getElementById(id).classList.remove('open')}
 document.querySelectorAll('.modal-backdrop').forEach(el=>el.addEventListener('click',e=>{if(e.target===el)closeModal(el.id)}));
 document.addEventListener('keydown',e=>{if(e.key==='Escape')document.querySelectorAll('.modal-backdrop.open').forEach(el=>el.classList.remove('open'))});
 
-function openMsgModal(id, nama, email, subjek, pesan, tanggal) {
+function openMsgModal(id, nama, email, telepon, subjek, pesan, tanggal) {
     document.getElementById('msg-subject').textContent = subjek;
     document.getElementById('msg-name').textContent = nama;
     document.getElementById('msg-email').textContent = email ? email : 'Tidak ada email';
+    document.getElementById('msg-phone').textContent = telepon ? 'Telp/WA: ' + telepon : '';
     document.getElementById('msg-date').textContent = tanggal;
     document.getElementById('msg-content').textContent = pesan;
     document.getElementById('msg-avatar').textContent = nama.charAt(0).toUpperCase();

@@ -226,6 +226,11 @@
                     @error('email')<span class="kritik-error">{{ $message }}</span>@enderror
                 </div>
                 <div class="kritik-form-group">
+                    <label class="kritik-label">No. Telepon / WA <span class="kritik-optional">(opsional)</span></label>
+                    <input type="tel" name="telepon" class="kritik-input {{ $errors->has('telepon') ? 'kritik-input-error' : '' }}" placeholder="08xxxxxxxxxx" value="{{ old('telepon') }}" maxlength="30">
+                    @error('telepon')<span class="kritik-error">{{ $message }}</span>@enderror
+                </div>
+                <div class="kritik-form-group">
                     <label class="kritik-label">Subjek <span class="kritik-required">*</span></label>
                     <input type="text" name="subjek" class="kritik-input {{ $errors->has('subjek') ? 'kritik-input-error' : '' }}" placeholder="Ringkasan pesan Anda" value="{{ old('subjek') }}" required maxlength="200">
                     @error('subjek')<span class="kritik-error">{{ $message }}</span>@enderror
